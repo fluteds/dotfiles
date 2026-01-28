@@ -1,0 +1,294 @@
+[
+  /*
+  // Display motivator
+  {
+		"type": "shellScriptTitledButton",
+    "bordered": false,
+    "align": "left",
+		"source": {
+			"filePath": "~/Library/Application Support/MTMR/motivator.sh"
+    },
+    "refreshInterval": 500 // in seconds
+  },
+  */
+  
+  /*{
+  "type": "appleScriptTitledButton",
+  "align": "left",
+  "bordered": false,
+  "autoResize": false,
+  "source": {
+    "inline": "tell application \"Calendar\"\n\tset today to current date\n\tset futureDate to today + (1 * days)\n\tset upcomingEvents to every event of calendar 1 whose start date is greater than or equal to today and start date is less than or equal to futureDate\n\tif upcomingEvents is {} then\n\t\treturn \"\"\n\telse\n\t\tset firstEvent to item 1 of upcomingEvents\n\t\tset eventTitle to summary of firstEvent\n\t\tset remainingTime to ((start date of firstEvent) - (current date)) div hours\n\t\treturn \"📅 in \" & remainingTime & \"H\"\n\tend if\nend tell"
+  },
+  "refreshInterval": 3600,  // in seconds
+  "longAction": "appleScript",
+  "longActionAppleScript": {
+    "inline": "activate application \"Calendar\""
+  }
+},
+/*
+  
+/*
+  // spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "bordered": false
+  },
+/*
+  {
+    "type": "staticButton",
+    "title": "🎧 ",
+    "bordered": false,
+    "width": 30,
+    "action": "appleScript",
+    "actionAppleScript": {
+      "inline": "tell application \"Spotify\" to activate"
+    }
+  },
+  
+    // spacer
+    {
+      "type": "titledButton",
+      "title": "",
+      "width": 8,
+      "bordered": false
+    },
+
+  // Open VS Code
+  {
+    "type": "staticButton",
+    "title": "🖥​",
+    "bordered": false,
+    "width": 30,
+    "action": "appleScript",
+    "actionAppleScript": {
+      "inline": "tell application \"Visual Studio Code\" to activate"
+    }
+  },
+*/
+
+  
+  // spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 12,
+    "bordered": false
+  },
+  
+  // Play/Pause
+  {
+    "type": "play",
+    "bordered": false
+  },
+  {
+    "type": "previous",
+    "bordered": false
+  },
+  {
+    "type": "next",
+    "bordered": false
+  },
+  
+  // Cuterdio
+  {
+  "type": "shellScriptTitledButton",
+  "refreshInterval": 10,
+  "align": "center",
+  "source": {
+    "inline": "echo -e $(cat ~/Library/Containers/de.suplanus.Cuterdio/Data/Library/Cuterdio/TrackInfo.txt)"
+  },
+  "actions": [
+    {
+      "trigger": "singleTap",
+      "action": "appleScript",
+      "actionAppleScript": {
+        "inline": "activate application \"Cuterdio\""
+      }
+    }
+  ],
+  "image": {
+      "filePath": "~/Library/Containers/de.suplanus.Cuterdio/Data/Library/Cuterdio/TrackInfo.png"
+  },
+  "bordered": false
+},
+
+  // FrogRadio
+  {
+    "type": "shellScriptTitledButton",
+    "bordered": false,
+    "refreshInterval": 5,
+    "source": {
+      "inline": "osascript ~/Library/Application\\ Support/MTMR/frogradio.scpt"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "tell application \"FrogRadio\" to activate"
+        }
+      }
+    ]
+  },
+
+  // Spotify
+  {
+    "type": "appleScriptTitledButton",
+    "source": {
+      "inline": "if application \"Spotify\" is running then\rtell application \"Spotify\"\rif player state is playing then\rreturn (get artist of current track) & \" – \" & (get name of current track)\relse\rreturn \"\"\rend if\rend tell\rend if\rreturn \"\"\r"
+    },
+    "action": "appleScript",
+    "actionAppleScript": {
+      "inline": "if application \"Spotify\" is running then\rtell application \"Spotify\"\rif player state is playing then\rnext track\rend if\rend tell\rend if\r"
+    },
+    "refreshInterval": 1 // in seconds
+    
+  },
+
+  /*
+  {
+    // Use with ./radio.sh
+    "type": "appleScriptTitledButton",
+    "bordered": false,
+    "refreshInterval": 1,
+    "source": {
+      "inline": "try\n  do shell script \"cat /Users/autumn/mtmr_nowplaying.txt\"\n  on error\n  return \"\"\nend try"
+    }
+  },
+  */
+
+  // Weather
+  {
+    "type": "weather",
+    "units": "metric",
+    "refreshInterval": 600, // in seconds
+    "icon_type": "text",
+    "api_key": "7e1e9400cdf8b687ba25d12e1df1956e",
+    "bordered": false,
+    "align": "right"
+  },
+  
+  // Spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "bordered": false,
+    "align": "right" 
+  },
+  
+  // Mute
+  {
+    "type": "mute",
+    "bordered": false,
+    "align": "right",
+    "width": 22
+  },
+  
+  // Volume down
+  {
+    "type": "volumeDown",
+    "bordered": false,
+    "align": "right",
+    "width": 22
+  },
+  
+  // Volume up
+  {
+    "type": "volumeUp",
+    "bordered": false,
+    "align": "right",
+    "width": 22
+  },
+  
+  // spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "align": "right",
+    "bordered": false
+  },
+  
+
+  // Do Not Disturb (notifications)
+  // TODO figure out how to change images on mode on/off
+{
+  "type": "staticButton",
+  "title": "Do Not Disturb",
+  "image": {
+			"base64": "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"  
+    },
+  "bordered": false,
+  "align": "right",
+  "width": 22,
+  "action": "appleScript",
+  "actionAppleScript": {
+    "inline": "tell application \"System Events\" to keystroke \"k\" using {control down, command down, option down, shift down}"
+  }
+},
+
+  
+  // spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "align": "right",
+    "bordered": false
+  },
+  
+  // Put display to sleep
+  { 
+    "type": "displaySleep", 
+    "title": "",
+    "image": {
+      "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMKSURBVHgBzVjbddpAEB3JPH7JJ4dHRAWQCgwVBFdgXAHuAKggpgJIBSYVGFdgOkDh+Ys/gQPkXnlXEQSMcBDyPUfsriR2rmZndmfGkBPR7/etaDRaRjdvGEYRbUJdxGyz2di4b6N9Xi6XnVwuZ8sJMPy+OBqNKmhuFQnfALHeer1uZrPZtp/3jxIaDofFq6urFia21C1q4RfaLq4etGBDCzM+gPYS0B7fK+Aqgvx3+as9e7VaNY4RO0iIk8fj8RqE3+sJ0W+CQFsT8ANq1jTNmv4gkHyYz+eNQ3PsJTSdTi2o+VHevpQaaaTT6Qf5D4DYPcj8UEN7sViU9tmXsY8MCDypLzr4x4/Az9ymd8Bl8vyhd04yRDKZpAeWODcuKxaLPVLmQULKZizF/uacZLykYFM33BowLFCm97m7ZDQ+vNRCdwYy34Ig44Wy0xd0E2hLmUymy/uuhugJbGnAQZMhqCnKUrJbWw+pnfF4vMHVlwtjMpn0KXswGFQ4djSEpaqy5cYlFwZ3cbaRSOTW4aLWkpqZpVKpL3Jh0MvgbZSfgO3mTGilrJ51JARwx1ZHkfDQNjEocgBizxIeuqrNw8DNr+yh7Ul4cGQzkqBRWxzw1JaQ4JGdMOhy7MGgfcdGQUDzMOWTgYTc4EpCgkf2jIRe2VORXijwyLbp9l32sDkWJDwUFIff1JDjcnD7awkPRf7A7bsmAviOGpTDsiOVDND9OxGGAThxu9yxsZYV3HdiZ+2GQUFvMyq9oiJ6DHsct8fa/VRMq3Jh6DgMR1dz64GOS5gdyIVAWbtxmLsxguEdW2ipxnRZAgbDHspSshv/EGJMy0QQXcYnT0GS0ukQZVGmN5vdOjpg5XXZTlEsOTN0EqqzGyXTxedOFAmdzKm8iZp6OYehcw6mPceS0HeLDdiX6p6twFf1Ys8cLDZUdbFBFSzqJxUbvNitXshbdNBhyMso851yzDV3f/GUY6ChO50QHsKpBStWMPJyAlhJA5H22QpWu6BhMlNh/EutoWVM7sYzuF5VBNH7SEnvD9lWIPML6w1QAAAAAElFTkSuQmCC"
+    },
+    "bordered": false,
+    "width": 16,
+    "align": "right"
+  },
+  
+  // spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "align": "right",
+    "bordered": false
+  },
+
+  // Brightness down
+  { 
+    "type": "brightnessDown", 
+    "width": 24, 
+    "bordered": false,
+    "align": "right" 
+  },
+  
+  // Brightness up
+  { 
+    "type": "brightnessUp", 
+    "width": 24, 
+    "bordered": false, 
+    "align": "right" 
+  },
+  // Battery
+  {
+    "type": "battery",
+    "align": "right",
+    "bordered": false
+  }
+  
+/*
+  // Network speed
+  { 
+    "type": "network", 
+    "align": "right", 
+    "bordered": false 
+  }
+*/

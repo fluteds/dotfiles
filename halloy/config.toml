@@ -1,0 +1,201 @@
+# Halloy config.
+#
+# For a complete list of available options,
+# please visit https://halloy.squidowl.org/configuration/index.html
+
+# ==================
+# === Appearance ===
+# ==================
+
+scale_factor = 1.2
+theme = "rose-pine"
+#theme = { light = "rose-pine-dawn", dark = "rose-pine" }
+
+[font]
+family = "Iosevka Comfy"
+size = 12
+
+# =====================
+# === Notifications ===
+# =====================
+
+[notifications.file_transfer_request]
+sound = "dong"
+show_toast = true
+
+[notifications.direct_message]
+sound = "ring"
+show_toast = true
+exclude = ["NickServ", "HostServ", "ChanServ", "Global", "ticklesweasel", "Rizon", "OperServ"]
+
+[notifications.highlight]
+sound = "dong"
+show_toast = true
+exclude = ["NickServ", "HostServ", "ChanServ", "Global", "ticklesweasel", "Rizon", "OperServ"]
+
+# ===============
+# === Sidebar ===
+# ===============
+
+[sidebar]
+unread_indicator = "title"
+
+[actions.sidebar]
+buffer = "replace-pane"
+
+# =====================
+# === File Transfer ===
+# =====================
+
+[file_transfer]
+save_directory = "<HOME_DOWNLOADS_PATH>"
+passive = true
+timeout = 180
+
+# ==============
+# === Buffer ===
+# ==============
+
+[buffer.server_messages]
+part = { enabled = false, smart = 600, username_format = "short" }
+join = { enabled = true, smart = 600, username_format = "short" }
+quit = { enabled = false, smart = 600, username_format = "short" }
+
+[buffer.commands]
+show_description = true
+
+[buffer.emojis]
+show_picker = true
+skin_tone = "default"
+auto_replace = true
+characters_to_trigger_picker = 3
+
+[buffer.mark_as_read]
+on_application_exit = true
+
+# ===============
+# === Servers ===
+# ===============
+
+[servers.cyberspace]
+nickname = "<USERNAME>"
+server = "colonq.computer"
+port = 26697
+use_tls = true
+channels = ["#cyberspace"]
+should_ghost = true
+chathistory = true
+reconnect_delay = 60
+
+#[servers.foxwells]
+#nickname = "<USERNAME>"
+#server = "nuclear.foxwells.garden"
+#port = 6697
+#use_tls = true
+#should_ghost = true
+#chathistory = true
+#reconnect_delay = 60
+
+#[servers.hashbang]
+#nickname = "<USERNAME>"
+#server = "irc.hashbang.sh"
+#port = 6697
+#use_tls = true
+#should_ghost = true
+#channels = ["#!"]
+#reconnect_delay = 60
+
+[servers.irchighway]
+nickname = "<USERNAME>"
+server = "irc.irchighway.net"
+port = 6697
+dangerously_accept_invalid_certs = true
+#channels = ["#ebooks"]
+should_ghost = true
+reconnect_delay = 60
+
+[servers.liberachat]
+nickname = "<USERNAME>"
+nick_password_file = "<PATH_TO_PASSWORD_FILE>"
+server = "irc.libera.chat"
+port = 6697
+use_tls = true
+#channels = ["#lobsters"]
+should_ghost = true
+chathistory = true
+reconnect_delay = 60
+
+#[servers.newnet] # tildeverse
+#nickname = "<USERNAME>"
+#nick_password_file = "<PATH_TO_PASSWORD_FILE>"
+#server = "irc.newnet.net"
+#port = 6697
+#use_tls = true
+#channels = ["#club", "#meta"]
+#should_ghost = true
+#chathistory = true
+#reconnect_delay = 60
+
+#[servers.rizon]
+#nickname = "<USERNAME>"
+#nick_password_file = "<PATH_TO_PASSWORD_FILE>"
+#server = "irc.rizon.net"
+#port = 6697
+#use_tls = true
+#channels = ["#r/a/dio", "#ComputerTech"]
+#should_ghost = true
+#chathistory = true
+#reconnect_delay = 60
+
+[servers.social]
+server = "irc.social.lol"
+nickname = "<USERNAME>"
+
+[servers.social.sasl.plain]
+username = "<USERNAME>"
+password_file = "<PATH_TO_PASSWORD_FILE>"
+
+#[servers.sdf]
+#nickname = "<USERNAME>"
+
+#server = "irc.sdf.org"
+#port = 6697
+#use_tls = true
+#auth_method = "sasl"
+#channels = ["#sdf"]
+#should_ghost = true
+#chathistory = true
+#reconnect_delay = 60
+
+[servers.tildetown]
+nickname = "<USERNAME>"
+server = "localhost"
+port = 6667
+use_tls = false
+channels = ["#tildetown"]
+chathistory = true
+reconnect_delay = 60
+should_ghost = true
+
+#[servers.tildechat]
+#nickname = "<USERNAME>"
+#nick_password_file = "<PATH_TO_PASSWORD_FILE>"
+#server = "irc.tilde.chat"
+#channels = ["#meta"]
+#port = 6697
+#use_tls = true
+#chathistory = true
+#should_ghost = true
+#reconnect_delay = 60
+
+#[servers.twitch]
+#nickname = "<USERNAME>"
+#password = "oauth:<OAUTH_TOKEN>"
+#server = "irc.chat.twitch.tv"
+#port = 6697
+#use_tls = true
+#channels = ["#<USERNAME>"]
+#should_ghost = true
+#chathistory = true
+#auto_commands = ["/quote CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"]
+#reconnect_delay = 60

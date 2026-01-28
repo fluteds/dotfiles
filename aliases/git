@@ -1,0 +1,79 @@
+#  ———————————————————————————————————————————————————————————————————————————
+#  Git
+#  ———————————————————————————————————————————————————————————————————————————
+
+# Switch to source-of-truth branch and make sure it’s up to date with the remote
+alias m="git checkout main && git pull origin main"
+alias ghp="git checkout gh-pages && git pull origin gh-pages"
+
+# Commit/push/pull helpers
+alias pull="git pull"
+alias push="git push"
+alias pushf="git push --force"
+alias cmt="git commit -m"
+alias amd="git commit --amend -m"
+
+# View details of the last commit
+alias last="git log -1 HEAD"
+
+# Tell your local changes to fuck off by resetting to the remote
+# Use: `gitfucked`
+function gitfucked {
+  branch=$(git symbolic-ref --short HEAD)
+  git fetch origin && git reset --hard origin/$branch
+}
+
+# Interactive history helper
+function hist() {
+  prompt() {
+    echo -e "\033[32m\n→\033[37m $1 \033[0m"
+  }
+  
+  prompt "What’s the file path? Leave blank for branch history."
+  read path_to_file
+  
+  prompt "How many commits would you like to display? (Default: 10)"
+  read number_of_commits
+  number_of_commits=${number_of_commits:-10}
+  
+  prompt "Would you like to pretty-print a graph? (y/n)"
+  read print_graph
+
+  git_command="git log -n $number_of_commits"
+
+  if [[ $print_graph == [Yy] ]]; then
+    git_command+=" --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+  else
+    git_command+=" --oneline"
+  fi
+
+  if [[ $file_path ]]; then
+    git_command+=" -- \"$path_to_file\""
+  fi
+
+  eval "$git_command"
+}
+
+# Interactive rebase helper
+# Use: `rebase <# of commits>`
+function rebase {
+  git rebase -i HEAD~${1:?"Specify the number of commits to go back in time."}
+}
+
+# Rebase to time travel
+alias redate="git rebase --committer-date-is-author-date"
+
+# Stash helpers
+alias stash="git stash"
+alias stash+="git stash pop"
+alias stash-="git stash drop"
+
+# Branch helpers
+# Use: `command <BRANCH_NAME>`
+alias new="git checkout -b"
+alias switch="git checkout"
+alias rename="git branch -m"
+alias delete="git branch -d"
+alias Delete="git branch -D"
+alias deleteBranches="git for-each-ref --format '%(refname:short)' refs/heads | grep -v 'main' | xargs git branch -D"
+alias branches="git branch -a"

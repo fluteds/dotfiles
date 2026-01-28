@@ -1,0 +1,31 @@
+#  ———————————————————————————————————————————————————————————————————————————
+#  Dev environment
+#  ———————————————————————————————————————————————————————————————————————————
+
+# Update/reload git config
+alias editgit="open ~/.gitconfig"
+
+# Update/reload shell configs
+alias reloadshell="exec ${SHELL} -l"
+alias editbash="open ~/.bash_profile"
+alias reloadbash='source ~/.bash_profile && echo "Done!"'
+alias editzsh="open ~/.zshrc"
+alias reload='clear && source ~/.zshrc && echo -e "$fg_bold[yellow] nice~ 👌"'
+
+# Update VS Code config
+alias editvs="open $HOME/Library/'Application Support'/Code/User/settings.json"
+
+# Homebrew helpers
+alias br="brew update"
+
+# Remove .DS_Store, mine enemy!
+alias dstore="find . -name '.DS_Store' -type f -delete"
+
+# Edit /etc/hosts file
+alias edithosts="open /etc/hosts"
+
+# Python
+alias python="python3"
+alias pip="pip3"
+
+alias treenm='tree -I "node_modules|dist|.git"' # Runs tree but excludes node_modules, dist  and .git files

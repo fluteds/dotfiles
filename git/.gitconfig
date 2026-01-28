@@ -1,0 +1,20 @@
+[core]
+	excludesfile = /Users/autumn/Documents/Repos/keys/dotfiles/.gitignore
+	editor = vim
+[credential]
+	helper = osxkeychain
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[help]
+	autocorrect = 1
+[merge]
+	conflictstyle = diff3[github]
+	user = fluteds
+[push]
+	default = simple
+[user]
+	name = fluteds
+	email = fluteds@users.noreply.github.com
