@@ -1,193 +1,213 @@
 # Dotfiles
 
-Contains my Dotfiles and rices for MacOS. 🐈
+Dotfiles + rice for macOS. 🐈
+
+This repo uses GNU Stow to symlink everything into place, so edits you make on your Mac are edits to the repo. No copying files around, no merging “local changes” back into version control.
 
 ## Setup
 
-One command install with `./macbook.sh`
+All this can be setup with one bootstrap script.
 
-| Category             | Software                                                      |
-|----------------------|---------------------------------------------------------------|
-| Shell Prompt         | [oh my zsh](https://ohmyz.sh)                                |
-| Windows Manager      | [yabai](https://github.com/koekeishiya/yabai), [borders](https://github.com/FelixKratz/JankyBorders) + [skhd](https://github.com/koekeishiya/skhd) |
-| Touchbar             | [MTMR](https://github.com/Toxblh/MTMR)                        |
-| Status Bar           | [Sketchybar](https://github.com/felixhageloh/Sketchybar)      |
-| Colour Scheme        | [Rose Pine](https://rosepinetheme.com)                       |
-| IRC Client           | [Halloy](https://halloy.squidowl.org)                        |
-| Editor               | [Visual Studio Code](https://code.visualstudio.com)          |
-| Terminal             | iTerm2                                                       |
+- Clone the repo into somewhere on your MacBook.
+- Run `chmod +x ./setup.sh`
+- Then `./setup.sh`
+
+Note: Some parts of the setup require sudo. You will be prompted in the terminal when required.
+
+## What’s included
+
+| Category        | Software |
+|----------------|----------|
+| Shell prompt    | [Oh My Zsh](https://ohmyz.sh) + Starship |
+| Window manager  | [yabai](https://github.com/koekeishiya/yabai), [skhd](https://github.com/koekeishiya/skhd), [borders](https://github.com/FelixKratz/JankyBorders) |
+| Touch Bar       | [MTMR](https://github.com/Toxblh/MTMR) |
+| Status bar      | [SketchyBar](https://github.com/felixhageloh/Sketchybar) |
+| Theme           | [Rosé Pine](https://rosepinetheme.com) |
+| IRC client      | [Halloy](https://halloy.squidowl.org) |
+| Editor          | [Visual Studio Code](https://code.visualstudio.com) |
+| Terminal        | iTerm2 |
+
+## How symlinking works
+
+Stow creates symlinks from your home directory to this repo. 
+
+Example:
+
+- `~/.config/yabai/yabairc` -> `~/Documents/Repos/dotfiles/yabai/.config/yabai/yabairc`
+
+That means you can edit config files normally and just commit changes like any other project. It all syncs and no more headscratching over merge conflicts.
 
 ## Keybinds
 
-### Yabai (with skhd)
+### Yabai (via skhd)
 
-#### Changing Focus
+Changing focus
 
-- ``Option`` + ``H`` / ``J`` / ``K`` / ``L``: Move focus left, down, up, or right.
+- Option + H / J / K / L: focus left / down / up / right
 
-#### Resizing Windows
+Resizing windows
 
-- ``Control`` + ``Option`` + ``H``: Resize window left.
-- ``Control`` + ``Option`` + ``J``: Resize window down.
-- ``Control`` + ``Option`` + ``K``: Resize window up.
-- ``Control`` + ``Option`` + ``L``: Resize window right.
-- ``Control`` + ``Option`` + ``E``: Equalize window sizes.
+- Control + Option + H: resize left
+- Control + Option + J: resize down
+- Control + Option + K: resize up
+- Control + Option + L: resize right
+- Control + Option + E: equalize window sizes
 
-#### Moving Windows
+Moving windows
 
-- ``Shift`` + ``Option`` + ``H`` / ``J`` / ``K`` / ``L``: Move window left, down, up, or right.
+- Shift + Option + H / J / K / L: move window left / down / up / right
 
-#### Moving Windows to Workspaces
+Moving windows to workspaces
 
-- ``Shift`` + ``Option`` + ``M``: Send window to the last active desktop.
-- ``Shift`` + ``Option`` + ``P``: Send window to the previous workspace.
-- ``Shift`` + ``Option`` + ``N``: Send window to the next workspace.
-- ``Shift`` + ``Option`` + ``1-9``: Send window to workspace 1 through 9.
+- Shift + Option + M: send window to last active desktop
+- Shift + Option + P: send window to previous workspace
+- Shift + Option + N: send window to next workspace
+- Shift + Option + 1-9: send window to workspace 1 through 9
 
-#### Rotating Windows
+Rotating windows
 
-- ``Option`` + ``R``: Rotate windows clockwise.
-- ``Shift`` + ``Option`` + ``R``: Rotate windows counterclockwise.
-- ``Shift`` + ``Option`` + ``X``: Flip windows on the x-axis.
-- ``Shift`` + ``Option`` + ``Y``: Flip windows on the y-axis.
+- Option + R: rotate clockwise
+- Shift + Option + R: rotate counterclockwise
+- Shift + Option + X: flip on the x-axis
+- Shift + Option + Y: flip on the y-axis
 
-## Terminal CLI Tools via Homebrew
+## Terminal CLI tools via Homebrew
 
 <details>
-<summary>Core Utilities & Shell</summary>
+<summary>Core utilities & shell</summary>
 
-| Tool                | Description                          |
-|---------------------|--------------------------------------|
-| bash                | GNU Bourne Again SHell               |
-| coreutils           | GNU core utilities                   |
-| curl                | Command line tool for transferring data |
-| wget                | Network downloader                   |
-| tree                | Display directories as trees         |
-| jq                  | JSON processor                       |
-| fzf                 | Fuzzy finder                         |
-| bat                 | `cat` clone with syntax highlighting |
-| neofetch            | System info tool                     |
-| starship            | Cross-shell prompt                   |
-| zsh-autosuggestions | Fish-like autosuggestions            |
-| zsh-completions     | Additional Zsh completions           |
-| zsh-syntax-highlighting | Syntax highlighting for Zsh      |
-| tmux                | Terminal multiplexer                 |
-| todo-txt            | Todo.txt CLI                         |
-| screenresolution    | Change screen resolutions            |
+| Tool | Description |
+|------|-------------|
+| bash | GNU Bourne Again SHell |
+| coreutils | GNU core utilities |
+| curl | CLI tool for transferring data |
+| wget | Network downloader |
+| tree | Display directories as trees |
+| jq | JSON processor |
+| fzf | Fuzzy finder |
+| bat | cat clone with syntax highlighting |
+| neofetch | System info tool |
+| starship | Cross-shell prompt |
+| zsh-autosuggestions | Fish-like autosuggestions |
+| zsh-completions | Additional Zsh completions |
+| zsh-syntax-highlighting | Syntax highlighting for Zsh |
+| tmux | Terminal multiplexer |
+| todo-txt | Todo.txt CLI |
+| screenresolution | Change screen resolutions |
 
 </details>
 
 <details>
-<summary>Development & Scripting</summary>
+<summary>Development & scripting</summary>
 
-| Tool      | Description                          |
-|-----------|--------------------------------------|
-| autoconf  | Automatic configure script builder   |
-| just      | Task runner similar to `make`        |
-| protobuf  | Google's data interchange format     |
-| readline  | GNU readline library                 |
-| libtool   | Generic library support              |
-| gettext   | GNU i18n support                     |
-| icu4c     | Unicode libraries                    |
-| python@3.13 | Python interpreter                 |
-| node      | Node.js runtime                      |
-| php       | PHP language                         |
-| go        | Go language                          |
-| pnpm      | Fast JavaScript package manager      |
-| pipx      | Run Python apps in isolated environments |
-| ruby      | Ruby language                        |
-| perl      | Perl language                        |
-| lua       | Lua scripting language               |
-| luajit    | Just-in-time compiler for Lua        |
-
-</details>
-
-<details>
-<summary>Editors & Text Tools</summary>
-
-| Tool     | Description                          |
-|----------|--------------------------------------|
-| emacs    | Extensible text editor               |
-| neovim   | Modern Vim-based editor              |
-| aspell   | Spell checker                        |
-| hunspell | Spell checker                        |
-| md4c     | Markdown parser                      |
+| Tool | Description |
+|------|-------------|
+| autoconf | Automatic configure script builder |
+| just | Task runner similar to make |
+| protobuf | Google’s data interchange format |
+| readline | GNU readline library |
+| libtool | Generic library support |
+| gettext | GNU i18n support |
+| icu4c | Unicode libraries |
+| python@3.13 | Python interpreter |
+| node | Node.js runtime |
+| php | PHP language |
+| go | Go language |
+| pnpm | Fast JavaScript package manager |
+| pipx | Run Python apps in isolated environments |
+| ruby | Ruby language |
+| perl | Perl language |
+| lua | Lua scripting language |
+| luajit | Just-in-time compiler for Lua |
 
 </details>
 
 <details>
-<summary>Data / Terminal Visuals</summary>
+<summary>Editors & text tools</summary>
 
-| Tool        | Description                        |
-|-------------|------------------------------------|
-| gnuplot     | Graphing utility                   |
-| cbonsai     | Bonsai tree in terminal            |
-| chafa       | Terminal image previews            |
-| amfora      | Gemini browser in terminal         |
-| tuifeed     | TUI feed reader                    |
-| goread      | TUI RSS reader                     |
-| irssi       | Terminal IRC client                |
-| weechat     | Terminal chat client               |
-| httrack     | Website copier                     |
-| yabai       | Tiling window manager              |
-| skhd        | Hotkey daemon                      |
-| sketchybar  | macOS status bar customization     |
-| borders     | macOS window borders               |
-| mosh        | Remote terminal application        |
-| telnet      | Telnet client                      |
-| socat       | Network connector                  |
-| pipes.sh    | Terminal graphics animation        |
+| Tool | Description |
+|------|-------------|
+| emacs | Extensible text editor |
+| neovim | Modern Vim-based editor |
+| aspell | Spell checker |
+| hunspell | Spell checker |
+| md4c | Markdown parser |
 
 </details>
 
 <details>
-<summary>Media / Audio Tools</summary>
+<summary>Data / terminal visuals</summary>
 
-| Tool             | Description                    |
-|------------------|--------------------------------|
-| ffmpeg           | Multimedia framework           |
-| flac             | Free Lossless Audio Codec      |
-| lame             | MP3 encoder                    |
-| rubberband       | Audio time-stretching          |
-| mpg123           | MP3 player and decoder         |
-| opus             | Audio codec                    |
-| speex            | Voice codec                    |
-| srt              | Secure Reliable Transport      |
-| spotify_player   | Spotify TUI player             |
-| spicetify-cli    | Customize Spotify client       |
-| switchaudio-osx  | Audio output switcher          |
-
-</details>
-
-<details>
-<summary>Security / Networking</summary>
-
-| Tool                | Description                      |
-|---------------------|----------------------------------|
-| docker              | Container platform               |
-| docker-completion   | Shell completions for Docker     |
-| gnupg               | OpenPGP encryption               |
-| pinentry            | GPG password prompt              |
-| openssl@3           | Secure sockets layer             |
-| net-snmp            | SNMP networking                  |
-| unbound             | DNS resolver                     |
-| ngrok               | Secure tunnels to localhost      |
+| Tool | Description |
+|------|-------------|
+| gnuplot | Graphing utility |
+| cbonsai | Bonsai tree in terminal |
+| chafa | Terminal image previews |
+| amfora | Gemini browser in terminal |
+| tuifeed | TUI feed reader |
+| goread | TUI RSS reader |
+| irssi | Terminal IRC client |
+| weechat | Terminal chat client |
+| httrack | Website copier |
+| yabai | Tiling window manager |
+| skhd | Hotkey daemon |
+| sketchybar | macOS status bar customization |
+| borders | macOS window borders |
+| mosh | Remote terminal application |
+| telnet | Telnet client |
+| socat | Network connector |
+| pipes.sh | Terminal graphics animation |
 
 </details>
 
 <details>
-<summary>Misc / Other CLI Tools</summary>
+<summary>Media / audio tools</summary>
 
-| Tool            | Description                      |
-|------------------|----------------------------------|
-| libserialport   | Serial port access               |
-| sqlite          | Lightweight SQL DB               |
-| libgit2         | Git library                      |
-| gh              | GitHub CLI                       |
-| npx             | Run npm packages                 |
-| mpdecimal       | Decimal arithmetic               |
-| ncurses         | Terminal UI library              |
-| yt-dlp          | YouTube downloader               |
-| x264 / x265     | Video encoders                   |
+| Tool | Description |
+|------|-------------|
+| ffmpeg | Multimedia framework |
+| flac | Free Lossless Audio Codec |
+| lame | MP3 encoder |
+| rubberband | Audio time-stretching |
+| mpg123 | MP3 player and decoder |
+| opus | Audio codec |
+| speex | Voice codec |
+| srt | Secure Reliable Transport |
+| spotify_player | Spotify TUI player |
+| spicetify-cli | Customize Spotify client |
+| switchaudio-osx | Audio output switcher |
+
+</details>
+
+<details>
+<summary>Security / networking</summary>
+
+| Tool | Description |
+|------|-------------|
+| docker | Container platform |
+| docker-completion | Shell completions for Docker |
+| gnupg | OpenPGP encryption |
+| pinentry | GPG password prompt |
+| openssl@3 | Secure sockets layer |
+| net-snmp | SNMP networking |
+| unbound | DNS resolver |
+| ngrok | Secure tunnels to localhost |
+
+</details>
+
+<details>
+<summary>Misc / other CLI tools</summary>
+
+| Tool | Description |
+|------|-------------|
+| libserialport | Serial port access |
+| sqlite | Lightweight SQL DB |
+| libgit2 | Git library |
+| gh | GitHub CLI |
+| npx | Run npm packages |
+| mpdecimal | Decimal arithmetic |
+| ncurses | Terminal UI library |
+| yt-dlp | YouTube downloader |
+| x264 / x265 | Video encoders |
 
 </details>
