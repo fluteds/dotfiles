@@ -4,7 +4,7 @@ Contains my Dotfiles and rices for MacOS. 🐈
 
 ## Setup
 
-One command install with `./macbook.sh`.
+One command install with `./macbook.sh`
 
 | Category             | Software                                                      |
 |----------------------|---------------------------------------------------------------|

@@ -1,236 +1,325 @@
-# ———————————————————————————————————————————————————————————————————————————
-#  One install script to rule them all
-#  Most taken from https://github.com/skullface/dotfiles/blob/main/install.sh
-# ———————————————————————————————————————————————————————————————————————————
+#!/usr/bin/env bash
+#---------------------------------------------------------------------------
+#  One install script to rule them all (stow edition)
+#  - Bootstraps macOS dev setup
+#  - Installs Homebrew + Brewfile deps
+#  - Installs NVM + Node
+#  - Installs Oh My Zsh + plugins
+#  - Symlinks dotfiles using GNU Stow (targeting $HOME)
+#
+#  Run:
+#    chmod +x install.sh
+#    ./install.sh
+#---------------------------------------------------------------------------
 
-echo -e "\\n  ⊹　  +  　  *　·   . 　 　 ⊹ .　　 　 ˚  ✫
+set -euo pipefail
+
+# Pretty header
+echo -e "\n  ⊹　  +  　  *　·   . 　 　 ⊹ .　　 　 ˚  ✫
 ˚　 ✦ *     · ·     + 　  ✦ 　˚     º. *   + 
 　✫ º .    ✫ ✵  　˚   ʰᵉˡˡᵒ    ✫  ⋆    . 　
  ✧ 　 *　　　　 ˚  *  　  ♡ 　  ˚ ✫ 　　    ⋆˚
 　 ˚  　 ✹ 　 .  + 　 ⊹    .*  ✦  ·    ✧˚ "
-echo -e "             📦 LET’S BOOTSTRAP! 🚀\\n"
+echo -e "             📦 LET’S BOOTSTRAP! 🚀\n"
+
+# Repo root (where this script lives)
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Close any open System Preferences panes
-osascript -e 'tell application "System Preferences" to quit'
+osascript -e 'tell application "System Preferences" to quit' >/dev/null 2>&1 || true
 
-echo -e "\\n\\n🔐 Enter password"
+echo -e "\n\n🔐 Enter password"
 sudo -v
 
-# Detect Mac architecture
-ARCH=$(uname -m)
-# Check if the machine is Apple Silicon (arm64) or Intel (x86_64)
-if [[ "$ARCH" == "arm64" ]]; then
-    echo "🔍 Detected Apple Silicon. Using /opt/homebrew."
-    export PATH="/opt/homebrew/bin:$PATH"  # Set Homebrew path for Apple Silicon
-else
-    echo "🔍 Detected Intel Mac. Using /usr/local."
-    export PATH="/usr/local/bin:$PATH"  # Set Homebrew path for Intel Mac
-fi
-
-# Keep alive: update existing `sudo` timestamp until `.macos` has finished
+# Keep sudo alive
 while true; do sudo -n true; sleep 300; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Command Line Tools
-echo -e "\\n\\n😒 Installing Xcode CLI tools… this will take a while."
-xcode-select --install
-
-# Install Homebrew if not installed
-if ! command -v brew &>/dev/null; then
-    echo -e "\n\n🍺 Installing Homebrew…"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+# Detect Mac architecture / Homebrew prefix
+ARCH="$(uname -m)"
+if [[ "$ARCH" == "arm64" ]]; then
+  echo "🔍 Detected Apple Silicon. Using /opt/homebrew."
+  HOMEBREW_PREFIX="/opt/homebrew"
+else
+  echo "🔍 Detected Intel Mac. Using /usr/local."
+  HOMEBREW_PREFIX="/usr/local"
 fi
+
+# Command Line Tools (idempotent-ish)
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo -e "\n\n😒 Installing Xcode CLI tools… (a prompt may appear)"
+  xcode-select --install || true
+else
+  echo -e "\n\n✅ Xcode CLI tools already installed"
+fi
+
+# Install Homebrew if missing
+if ! command -v brew >/dev/null 2>&1; then
+  echo -e "\n\n🍺 Installing Homebrew…"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Load brew into PATH for this script session
+  if [[ -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+    eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+  fi
+else
+  # Ensure brew is available in PATH for this script
+  if [[ -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+    eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+  fi
+fi
+
 brew update && brew upgrade
 
-echo -e "\\n\\n📦 Installing Homebrew apps and CLI packages…"
-brew bundle
+# Brew bundle
+echo -e "\n\n📦 Installing Homebrew apps and CLI packages…"
+if [[ -f "$REPO_DIR/brew/Brewfile" ]]; then
+  brew bundle --file "$REPO_DIR/brew/Brewfile"
+elif [[ -f "$REPO_DIR/Brewfile" ]]; then
+  brew bundle --file "$REPO_DIR/Brewfile"
+else
+  echo "⚠️  No Brewfile found in repo; skipping brew bundle"
+fi
 
-echo -e "\\n\\n=================================================="
+echo -e "\n\n=================================================="
 echo "🚮 Cleaning up any old brews or casks…"
-brew cleanup
+brew cleanup || true
 
-# NVM
-echo -e "\\n\\n💚 Installing NVM and setting Node version…"
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# GNU Stow
+if ! command -v stow >/dev/null 2>&1; then
+  echo -e "\n\n🔗 Installing GNU Stow…"
+  brew install stow
+fi
+
+# Backup helper (for first-run conflicts)
+backup_path="$HOME/.dotfiles_backup/$(date +%Y%m%d-%H%M%S)"
+backup() {
+  local target="$1"
+  if [[ -e "$target" || -L "$target" ]]; then
+    mkdir -p "$backup_path"
+    echo "📦 Backing up: $target -> $backup_path/"
+    mv "$target" "$backup_path/" 2>/dev/null || true
+  fi
+}
+
+# NVM + Node
+echo -e "\n\n💚 Installing NVM and setting Node version…"
+if [[ ! -d "$HOME/.nvm" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+fi
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# shellcheck disable=SC1090
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"
+# shellcheck disable=SC1090
+[[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
-nvm install 20.11.1
-nvm alias default 20.11.1
+# If nvm loaded successfully, set Node
+if command -v nvm >/dev/null 2>&1; then
+  nvm install 20.11.1
+  nvm alias default 20.11.1
+else
+  echo "⚠️  nvm not available in this shell; open a new terminal and run: nvm install 20.11.1"
+fi
 
 # Spicetify
-echo -e "\\n\\n🎵 Installing Spicetify…"
-brew install spicetify-cli
-spicetify backup
-spicetify apply 
-spicetify enable-devtools
-echo "✅ Spicetify installed"
+echo -e "\n\n🎵 Installing Spicetify…"
+brew install spicetify-cli || true
+if command -v spicetify >/dev/null 2>&1; then
+  spicetify backup || true
+  spicetify apply || true
+  spicetify enable-devtools || true
+  echo "✅ Spicetify installed"
+else
+  echo "⚠️  Spicetify not found after install; skipping"
+fi
 
-# Vencord
-echo -e "\\n\\n💬 Installing Vencord installer for Discord…"
-curl -L https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.MacOs.zip -o ~/Downloads/VencordInstaller.MacOs.zip
-unzip ~/Downloads/VencordInstaller.MacOs.zip
-sudo mv ~/Downloads/vencord/VencordInstaller.app /Applications/
-rm ~/Downloads/VencordInstaller.MacOs.zip
-echo "✅ Vencord installed"
+# Vencord installer (downloads and moves app)
+echo -e "\n\n💬 Installing Vencord installer for Discord…"
+tmp_vencord="$HOME/Downloads/VencordInstaller.MacOs.zip"
+curl -L https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.MacOs.zip -o "$tmp_vencord"
+# unzip into Downloads (creates a folder). overwrite ok.
+unzip -o "$tmp_vencord" -d "$HOME/Downloads/vencord" >/dev/null || true
+if [[ -d "$HOME/Downloads/vencord/VencordInstaller.app" ]]; then
+  sudo mv "$HOME/Downloads/vencord/VencordInstaller.app" /Applications/ || true
+  echo "✅ Vencord installed"
+else
+  echo "⚠️  Could not find VencordInstaller.app after unzip"
+fi
+rm -f "$tmp_vencord" || true
 
-# Customize Terminal: download and install custom font
-wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CommitMono.zip
-mv CommitMono.zip ~/Downloads/CommitMono.zip
-unzip ~/Downloads/CommitMono.zip -d ~/Downloads/CommitMono
-mv ~/Downloads/CommitMono/*.otf ~/Library/Fonts/
-fc-cache -fv
-rm -rf ~/Downloads/CommitMono
-rm ~/Downloads/CommitMono.zip
-echo "✅ Custom fonts downloaded and installed"
+# Fonts (CommitMono Nerd Font)
+echo -e "\n\n🔤 Installing CommitMono Nerd Font…"
+tmp_zip="$HOME/Downloads/CommitMono.zip"
+tmp_dir="$HOME/Downloads/CommitMono"
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CommitMono.zip -o "$tmp_zip"
+mkdir -p "$tmp_dir"
+unzip -o "$tmp_zip" -d "$tmp_dir" >/dev/null || true
+mkdir -p "$HOME/Library/Fonts"
+find "$tmp_dir" -name "*.otf" -maxdepth 2 -exec mv {} "$HOME/Library/Fonts/" \; 2>/dev/null || true
+rm -rf "$tmp_dir" "$tmp_zip" || true
+echo "✅ Fonts installed"
 
-# Customize Terminal: ohmyzsh
-echo -e "\\n\\n💻 Customizing command line with ohmyzsh…"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Oh My Zsh
+echo -e "\n\n💻 Installing Oh My Zsh…"
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+  # NOTE: this installer can change your default shell and may launch a new zsh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || true
+else
+  echo "✅ Oh My Zsh already installed"
+fi
 
-# Set Terminal font size (change '14' to whatever size you prefer)
-echo -e "\\n\\n🔧 Setting Terminal font size…"
-osascript -e 'tell application "Terminal" to set font size of first window to 14'
-echo "✅ Terminal font size set"
+# Zsh plugins (via brew)
+echo -e "\n\n✨ Installing zsh plugins…"
+brew install zsh-syntax-highlighting zsh-autosuggestions || true
 
-# Customize Terminal: ohmyzsh plugins
-brew install zsh-syntax-highlighting zsh-autosuggestions
-echo "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
-echo "source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
-
-# Customize Terminal: Set default profile and font size
-defaults write com.apple.terminal "Default Window Settings" -string "Basic"
-defaults write com.apple.terminal "Startup Window Settings" -string "Basic"
-
-# Set font size to 14
-/usr/libexec/PlistBuddy -c "Set :Window\ Settings:Basic:Font:Size 14" ~/Library/Preferences/com.apple.terminal.plist
-
-# Customize Terminal: remove last login msg
-echo -e "\\n\\n⏰ Removing that “last login” message…"
-touch ~/.hushlogin
+# Terminal tweaks
+echo -e "\n\n⏰ Removing that “last login” message…"
+touch "$HOME/.hushlogin"
 echo "✅ Removed 'last login' message"
 
-echo -e "\\n\\n🚀 Installing Spaceship theme…"
-git clone https://github.com/denysdovhan/spaceship-prompt.git ~/.oh-my-zsh/custom/themes/spaceship-prompt
-echo "✅ Downloaded Spaceship prompt"
+echo -e "\n\n🔧 Setting Terminal defaults…"
+defaults write com.apple.terminal "Default Window Settings" -string "Basic" || true
+defaults write com.apple.terminal "Startup Window Settings" -string "Basic" || true
+# Setting font size via plist is fragile across macOS versions; keep best-effort
+/usr/libexec/PlistBuddy -c "Set :Window\ Settings:Basic:Font:Size 14" "$HOME/Library/Preferences/com.apple.terminal.plist" 2>/dev/null || true
 
-# Starship: Download custom starship.toml configuration
-echo -e "\\n\\n💫 Moving custom Starship configuration…"
-cp starship.toml ~/.config/starship.toml
-echo "✅ Starship configuration done"
+# Spaceship theme (optional)
+echo -e "\n\n🚀 Installing Spaceship theme…"
+if [[ ! -d "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" ]]; then
+  git clone https://github.com/denysdovhan/spaceship-prompt.git "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" || true
+fi
+ln -sf "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" \
+       "$HOME/.oh-my-zsh/custom/themes/spaceship.zsh-theme" || true
+echo "✅ Spaceship prompt ready"
 
-# Spaceship: Install configuration
-ln -s ~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme ~/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-echo "✅ Symlink for Spaceship prompt set"
+# ---------------------------------------------------------------------------
+# DOTFILES: STOW
+# Your repo folders are:
+#   aliases borders brew git halloy iterm2 mtmr sketchybar skhd starship yabai zsh
+# We stow packages that map into $HOME. (macbook.sh is not a stow package.)
+# ---------------------------------------------------------------------------
+echo -e "\n\n🔗 Symlinking dotfiles with stow…"
+cd "$REPO_DIR"
 
-echo -e "\n\n📂 Copying configs to their proper locations…"
-# Ensure directories exist
-mkdir -p ~/.config
-mkdir -p ~/.config/skhd ~/.config/yabai ~/Library/Application\ Support/MTMR ~/.config/sketchybar ~/.config/iterm2
+# Don’t let repo .DS_Store ever break stow
+find . -name ".DS_Store" -print -delete 2>/dev/null || true
+grep -qxF ".DS_Store" .gitignore 2>/dev/null || echo ".DS_Store" >> .gitignore
 
-# Backup existing configs before copying
-[ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc.backup
-[ -f ~/.config/skhd/skhdrc ] && cp ~/.config/skhd/skhdrc ~/.config/skhd/skhdrc.backup
-[ -f ~/.config/yabai/yabairc ] && cp ~/.config/yabai/yabairc ~/.config/yabai/yabairc.backup
+# Ensure base dirs exist
+mkdir -p "$HOME/.config" "$HOME/.config/yabai" "$HOME/Library/Application Support"
 
-# Copy and set proper permissions
-cp .zshrc ~/.zshrc && chmod 644 ~/.zshrc && echo "✅ .zshrc copied"
-cp skhdrc ~/.config/skhd/skhdrc && chmod 644 ~/.config/skhd/skhdrc && echo "✅ skhdrc copied"
-cp yabairc ~/.config/yabai/yabairc && chmod 755 ~/.config/yabai/yabairc && echo "✅ yabairc copied"
-cp -r mtmr ~/Library/Application\ Support/MTMR && echo "✅ MTMR copied"
-cp -r sketchybar ~/.config/sketchybar && echo "✅ sketchybar copied"
-cp -r iterm2 ~/.config/iterm2 && echo "✅ iterm2 copied"
-echo -e "✅ Configs successfully copied!"
+# Back up known conflict targets (safe first-run behaviour)
+backup "$HOME/.zshrc"
+backup "$HOME/.zsh_aliases"
 
-# Reload configurations
-echo -e "\\n🔄 Reloading configurations…"
-pkill -USR1 skhd && echo "✅ skhd config reloaded"
-yabai --restart-service && echo "✅ yabai service restarted"
-sketchybar --reload && echo "✅ SketchyBar reloaded"
-echo -e "\\n✅ Skhd, Sketchtbar and Yabai setup complete"
+backup "$HOME/.config/starship.toml"
+backup "$HOME/.config/sketchybar"
+backup "$HOME/.config/borders"
 
-# Git Configuration
-echo -e "\\n📂 Setting up Git configuration…"
-cp git/.gitconfig ~/.gitconfig && chmod 644 ~/.gitconfig
-cp git/.gitignore ~/.gitignore && chmod 644 ~/.gitignore
+backup "$HOME/.config/yabai/yabairc"
+backup "$HOME/.config/yabai/skhdrc"
 
-# Set global Git ignore file
-git config --global core.excludesfile ~/.gitignore
-echo -e "\\n✅ Git setup complete"
+backup "$HOME/Library/Application Support/halloy"
+# MTMR commonly has real files already
+backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
+backup "$HOME/Library/Application Support/MTMR/items.json"
+backup "$HOME/Library/Application Support/MTMR/motivator.sh"
 
-# MacOS Settings
-# Trackpad, Keyboard, Finder, Desktop and Dock settings
-echo -e "\\n\\n🍎 Configuring MacOS system preferences…"
+# Optional: if you previously had legacy dotfiles at home, back them up too
+backup "$HOME/.skhdrc"
+backup "$HOME/.yabairc"
+backup "$HOME/.gitconfig"
+backup "$HOME/.gitignore"
+backup "$HOME/.config/iterm2"
+
+# Stow packages into HOME (this must match your repo folders)
+stow -v -t "$HOME" \
+  zsh \
+  yabai \
+  skhd \
+  starship \
+  sketchybar \
+  halloy \
+  mtmr \
+  borders \
+  iterm2 \
+  git \
+  brew
+
+echo "✅ Dotfiles symlinked."
+
+# Reload configurations (best-effort)
+echo -e "\n🔄 Reloading configurations…"
+command -v skhd >/dev/null 2>&1 && pkill -USR1 skhd && echo "✅ skhd config reloaded" || true
+command -v yabai >/dev/null 2>&1 && yabai --restart-service && echo "✅ yabai service restarted" || true
+command -v sketchybar >/dev/null 2>&1 && sketchybar --reload && echo "✅ SketchyBar reloaded" || true
+echo -e "\n✅ Skhd, Sketchybar and Yabai setup complete"
+
+# Git configuration (prefer stowed files)
+echo -e "\n📂 Setting up Git configuration…"
+if [[ -f "$HOME/.gitconfig" ]]; then
+  echo "✅ .gitconfig present"
+fi
+if [[ -f "$HOME/.gitignore" ]]; then
+  git config --global core.excludesfile "$HOME/.gitignore" || true
+  echo "✅ Git global ignore set"
+else
+  echo "⚠️  No ~/.gitignore found; skipping excludesfile"
+fi
+
+# macOS preferences (your existing tweaks)
+echo -e "\n\n🍎 Configuring MacOS system preferences…"
 echo "=================================================="
 
-# Trackpad: Enable tap-to-click
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-# Trackpad: Enable "natural" scroll
-defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
+# Trackpad
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true || true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 || true
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true || true
 echo "✅ Trackpad settings customized"
 
-# Keyboard: Disable smart quotes
-defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
-# Keyboard: Disable double space for period
-defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
-# Keyboard: Disable smart emojis eg <3 to ❤️
-defaults write -g NSAutomaticEmojiSubstitutionEnabled -bool false
+# Keyboard
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false || true
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false || true
+defaults write -g NSAutomaticEmojiSubstitutionEnabled -bool false || true
 echo "✅ Keyboard settings customized"
 
-# Behavior: Always show scrollbars
-# defaults write NSGlobalDomain AppleShowScrollBars -string "Auto"
-echo "✅ Behavior settings customized"
-
-# Finder: Always show hidden files
-defaults write com.apple.finder AppleShowAllFiles YES
-# Finder: Use list view in all Finder windows by default
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
-# Finder: Keep folders on top when sorting by name
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-# Finder: Expand save dialog by default
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-# Finder: Show the ~/Library folder in Finder window
-chflags nohidden ~/Library
-# Finder: Show Path bar in Finder window
-defaults write com.apple.finder ShowPathbar -bool true
-# Finder: Show Status bar in Finder window
-defaults write com.apple.finder ShowStatusBar -bool true
-# Finder: Show filename extensions by default
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-# Finder: When performing a search, search the current folder by default
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+# Finder
+defaults write com.apple.finder AppleShowAllFiles YES || true
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv" || true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true || true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true || true
+chflags nohidden "$HOME/Library" || true
+defaults write com.apple.finder ShowPathbar -bool true || true
+defaults write com.apple.finder ShowStatusBar -bool true || true
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true || true
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf" || true
 echo "✅ Finder settings customized"
 
-# Dock: move to right of screen
-defaults write com.apple.dock orientation -string right
-# Dock: use "scale" app minimization effect
-defaults write com.apple.dock mineffect -string scale
-# Dock: make icons smaller
-defaults write com.apple.dock tilesize -integer 33
-# Dock: halve the show/hide animation time 
-defaults write com.apple.dock autohide-time-modifier -float 0.5
-# Dock: remove delay to show/hide
-defaults write com.apple.dock autohide-delay -float 0
+# Dock
+defaults write com.apple.dock orientation -string right || true
+defaults write com.apple.dock mineffect -string scale || true
+defaults write com.apple.dock tilesize -integer 33 || true
+defaults write com.apple.dock autohide-time-modifier -float 0.5 || true
+defaults write com.apple.dock autohide-delay -float 0 || true
 
-# Dock: Show only active applications
-#defaults write com.apple.dock static-only -bool true
-#echo "✅ Dock settings customized"
-
-# Desktop: Show removable media CDs, DVDs etc
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-# Desktop: Show external drives, USBs etc
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+# Desktop
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true || true
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true || true
 echo "✅ Desktop settings customized"
 
-echo "🔄 Now restarting Finder and Dock…"
-sudo killall Finder && killall Dock
+echo "🔄 Restarting Finder and Dock…"
+killall Finder >/dev/null 2>&1 || true
+killall Dock >/dev/null 2>&1 || true
 
-echo -e "\\n\\n👩‍💻 Setup complete!"
+echo -e "\n\n👩‍💻 Setup complete!"
 echo "✨💋🌈🍰🌻🌟💫🌱🐱🍿🍓"
-echo -e "\\n\\n"
+echo -e "\n\n"
 
-echo "🔄 Restarting Terminal..."
-source ~/.zshrc
-echo -e "\\n\\n"
+# Reload shell config (best-effort)
+echo "🔄 Reloading shell…"
+if [[ -f "$HOME/.zshrc" ]]; then
+  # shellcheck disable=SC1090
+  source "$HOME/.zshrc" || true
+fi
+
+echo -e "\n\n✅ Done.\n"

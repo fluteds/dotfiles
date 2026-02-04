@@ -1,47 +1,71 @@
-export PATH="/opt/homebrew/bin:$PATH"
+# Homebrew (Apple Silicon + fallback)
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
 
+# Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
-#ZSH_THEME="robbyrussell" # Use a ZSH theme
-
+# ZSH_THEME="robbyrussell"
 plugins=(git)
+source "$ZSH/oh-my-zsh.sh"
 
-source $ZSH/oh-my-zsh.sh
+# Zsh plugins (prefer Homebrew prefix so it works on both /opt/homebrew and /usr/local)
+HOMEBREW_PREFIX="$(brew --prefix 2>/dev/null)"
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -n "$HOMEBREW_PREFIX" ]; then
+  [ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
+    source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# Find all my dotfiles~
-typeset -U config_files
-config_files=($HOME/Documents/Repos/keys/macos/aliases/*)
+  [ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+    source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
 
-# And load ’em up
-for file in ${${config_files}}
-do
-  source $file
-done
+# Source all alias files (only if they exist)
+alias_dir="$HOME/.zsh_aliases"
+if [ -d "$alias_dir" ]; then
+  for file in "$alias_dir"/*(.N); do
+    source "$file"
+  done
+fi
 
+
+# Common aliases
 alias python="python3"
 alias pip="pip3"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# Set code as default editor
+# Editor
 export EDITOR="code --wait"
 
-# Export scripts to path
-export PATH="$HOME/scripts:$PATH"
-export PATH="$PATH:/Users/autumn/.local/bin"
+# PATH additions (avoid duplicates)
+path=(
+  "$HOME/scripts"
+  "$HOME/.local/bin"
+  $path
+)
+typeset -U path PATH
 
- # Decode base64
- b64() {
-  echo "$1" | base64 --decode | tee >(pbcopy 2>/dev/null || xclip -sele
-  ction clipboard 2>/dev/null || wl-copy 2>/dev/null)
+# Base64 decode + copy to clipboard (macOS pbcopy, Linux xclip/wl-copy)
+b64() {
+  echo "$1" | base64 --decode | tee >(
+    pbcopy 2>/dev/null || xclip -selection clipboard 2>/dev/null || wl-copy 2>/dev/null
+  )
 }
 
-# Get a random Pokemon
-pokeget random
+# Random Pokemon (only if installed)
+command -v pokeget >/dev/null 2>&1 && pokeget random
 
-# Use Starship
-eval "$(starship init zsh)"
+# Starship (only if installed)
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+
+# NVM (lazy-load so your shell starts faster)
+export NVM_DIR="$HOME/.nvm"
+nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  command nvm "$@"
+}
+node() { nvm use --silent >/dev/null 2>&1; command node "$@"; }
+npm()  { nvm use --silent >/dev/null 2>&1; command npm "$@"; }
+npx()  { nvm use --silent >/dev/null 2>&1; command npx "$@"; }
