@@ -1,41 +1,45 @@
 [
-  /*
+/*
   // Display motivator
   {
-		"type": "shellScriptTitledButton",
+    "type": "shellScriptTitledButton",
     "bordered": false,
     "align": "left",
-		"source": {
-			"filePath": "~/Library/Application Support/MTMR/motivator.sh"
+    "source": {
+      "filePath": "~/Library/Application Support/MTMR/motivator.sh"
     },
     "refreshInterval": 500 // in seconds
   },
-  */
-  
-  /*{
-  "type": "appleScriptTitledButton",
-  "align": "left",
-  "bordered": false,
-  "autoResize": false,
-  "source": {
-    "inline": "tell application \"Calendar\"\n\tset today to current date\n\tset futureDate to today + (1 * days)\n\tset upcomingEvents to every event of calendar 1 whose start date is greater than or equal to today and start date is less than or equal to futureDate\n\tif upcomingEvents is {} then\n\t\treturn \"\"\n\telse\n\t\tset firstEvent to item 1 of upcomingEvents\n\t\tset eventTitle to summary of firstEvent\n\t\tset remainingTime to ((start date of firstEvent) - (current date)) div hours\n\t\treturn \"📅 in \" & remainingTime & \"H\"\n\tend if\nend tell"
+*/
+
+/*
+  // Calendar events
+  {
+    "type": "appleScriptTitledButton",
+    "align": "left",
+    "bordered": false,
+    "autoResize": false,
+    "source": {
+      "inline": "tell application \"Calendar\"\n\tset today to current date\n\tset futureDate to today + (1 * days)\n\tset upcomingEvents to every event of calendar 1 whose start date is greater than or equal to today and start date is less than or equal to futureDate\n\tif upcomingEvents is {} then\n\t\treturn \"\"\n\telse\n\t\tset firstEvent to item 1 of upcomingEvents\n\t\tset eventTitle to summary of firstEvent\n\t\tset remainingTime to ((start date of firstEvent) - (current date)) div hours\n\t\treturn \"📅 in \" & remainingTime & \"H\"\n\tend if\nend tell"
+    },
+    "refreshInterval": 3600, // in seconds
+    "longAction": "appleScript",
+    "longActionAppleScript": {
+      "inline": "activate application \"Calendar\""
+    }
   },
-  "refreshInterval": 3600,  // in seconds
-  "longAction": "appleScript",
-  "longActionAppleScript": {
-    "inline": "activate application \"Calendar\""
-  }
-},
+*/
+
 /*
-  
-/*
-  // spacer
+  // Spacer
   {
     "type": "titledButton",
     "title": "",
     "width": 8,
     "bordered": false
   },
+*/
+
 /*
   {
     "type": "staticButton",
@@ -47,19 +51,23 @@
       "inline": "tell application \"Spotify\" to activate"
     }
   },
-  
-    // spacer
-    {
-      "type": "titledButton",
-      "title": "",
-      "width": 8,
-      "bordered": false
-    },
+*/
 
+/*
+  // Spacer
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 8,
+    "bordered": false
+  },
+*/
+
+/*
   // Open VS Code
   {
-    "type": "staticButton",
-    "title": "🖥​",
+  "type": "staticButton",
+  "title": "🖥​",
     "bordered": false,
     "width": 30,
     "action": "appleScript",
@@ -69,14 +77,15 @@
   },
 */
 
-  
-  // spacer
+/*
+  // Spacer
   {
     "type": "titledButton",
     "title": "",
     "width": 12,
     "bordered": false
   },
+*/
   
   // Play/Pause
   {
@@ -144,11 +153,11 @@
     "actionAppleScript": {
       "inline": "if application \"Spotify\" is running then\rtell application \"Spotify\"\rif player state is playing then\rnext track\rend if\rend tell\rend if\r"
     },
-    "refreshInterval": 1 // in seconds
+    "refreshInterval": 1
     
   },
 
-  /*
+/*
   {
     // Use with ./radio.sh
     "type": "appleScriptTitledButton",
@@ -158,13 +167,13 @@
       "inline": "try\n  do shell script \"cat /Users/autumn/mtmr_nowplaying.txt\"\n  on error\n  return \"\"\nend try"
     }
   },
-  */
+*/
 
   // Weather
   {
     "type": "weather",
     "units": "metric",
-    "refreshInterval": 600, // in seconds
+    "refreshInterval": 600,
     "icon_type": "text",
     "api_key": "7e1e9400cdf8b687ba25d12e1df1956e",
     "bordered": false,
@@ -283,12 +292,4 @@
     "align": "right",
     "bordered": false
   }
-  
-/*
-  // Network speed
-  { 
-    "type": "network", 
-    "align": "right", 
-    "bordered": false 
-  }
-*/
+]
