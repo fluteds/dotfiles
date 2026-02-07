@@ -1,16 +1,4 @@
 #!/usr/bin/env bash
-#---------------------------------------------------------------------------
-#  One install script to rule them all (stow edition)
-#  - Bootstraps macOS dev setup
-#  - Installs Homebrew + Brewfile deps
-#  - Installs NVM + Node
-#  - Installs Oh My Zsh + plugins
-#  - Symlinks dotfiles using GNU Stow (targeting $HOME)
-#
-#  Run:
-#    chmod +x install.sh
-#    ./install.sh
-#---------------------------------------------------------------------------
 
 set -euo pipefail
 
@@ -44,6 +32,17 @@ else
   HOMEBREW_PREFIX="/usr/local"
 fi
 
+# Ensure basic tools exist
+if ! command -v curl >/dev/null 2>&1; then
+  echo "❌ curl not found. Please install Xcode Command Line Tools first."
+  exit 1
+fi
+
+if ! command -v unzip >/dev/null 2>&1; then
+  echo "❌ unzip not found. Please install Xcode Command Line Tools first."
+  exit 1
+fi
+
 # Command Line Tools (idempotent-ish)
 if ! xcode-select -p >/dev/null 2>&1; then
   echo -e "\n\n😒 Installing Xcode CLI tools… (a prompt may appear)"
@@ -68,7 +67,9 @@ else
   fi
 fi
 
-brew update && brew upgrade
+echo -e "\n\n🍺 Updating brew…"
+brew update
+brew upgrade || true
 
 # Brew bundle
 echo -e "\n\n📦 Installing Homebrew apps and CLI packages…"
@@ -77,7 +78,7 @@ if [[ -f "$REPO_DIR/brew/Brewfile" ]]; then
 elif [[ -f "$REPO_DIR/Brewfile" ]]; then
   brew bundle --file "$REPO_DIR/Brewfile"
 else
-  echo "⚠️  No Brewfile found in repo; skipping brew bundle"
+  echo "⚠️ No Brewfile found in repo; skipping brew bundle"
 fi
 
 echo -e "\n\n=================================================="
@@ -102,7 +103,8 @@ backup() {
 }
 
 # NVM + Node
-echo -e "\n\n💚 Installing NVM and setting Node version…"
+NODE_VERSION="20.11.1"
+echo -e "\n\n💚 Installing NVM and setting Node version (${NODE_VERSION})…"
 if [[ ! -d "$HOME/.nvm" ]]; then
   curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 fi
@@ -113,12 +115,11 @@ export NVM_DIR="$HOME/.nvm"
 # shellcheck disable=SC1090
 [[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
-# If nvm loaded successfully, set Node
 if command -v nvm >/dev/null 2>&1; then
-  nvm install 20.11.1
-  nvm alias default 20.11.1
+  nvm install "$NODE_VERSION"
+  nvm alias default "$NODE_VERSION"
 else
-  echo "⚠️  nvm not available in this shell; open a new terminal and run: nvm install 20.11.1"
+  echo "⚠️ nvm not available in this shell; open a new terminal and run: nvm install ${NODE_VERSION}"
 fi
 
 # Spicetify
@@ -130,20 +131,22 @@ if command -v spicetify >/dev/null 2>&1; then
   spicetify enable-devtools || true
   echo "✅ Spicetify installed"
 else
-  echo "⚠️  Spicetify not found after install; skipping"
+  echo "⚠️ Spicetify not found after install; skipping"
 fi
 
 # Vencord installer (downloads and moves app)
 echo -e "\n\n💬 Installing Vencord installer for Discord…"
 tmp_vencord="$HOME/Downloads/VencordInstaller.MacOs.zip"
-curl -L https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.MacOs.zip -o "$tmp_vencord"
-# unzip into Downloads (creates a folder). overwrite ok.
-unzip -o "$tmp_vencord" -d "$HOME/Downloads/vencord" >/dev/null || true
-if [[ -d "$HOME/Downloads/vencord/VencordInstaller.app" ]]; then
-  sudo mv "$HOME/Downloads/vencord/VencordInstaller.app" /Applications/ || true
+vencord_dir="$HOME/Downloads/vencord"
+rm -rf "$vencord_dir" || true
+curl -fL https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.MacOs.zip -o "$tmp_vencord" || true
+mkdir -p "$vencord_dir"
+unzip -o "$tmp_vencord" -d "$vencord_dir" >/dev/null 2>&1 || true
+if [[ -d "$vencord_dir/VencordInstaller.app" ]]; then
+  sudo mv "$vencord_dir/VencordInstaller.app" /Applications/ || true
   echo "✅ Vencord installed"
 else
-  echo "⚠️  Could not find VencordInstaller.app after unzip"
+  echo "⚠️ Could not find VencordInstaller.app after unzip"
 fi
 rm -f "$tmp_vencord" || true
 
@@ -151,18 +154,19 @@ rm -f "$tmp_vencord" || true
 echo -e "\n\n🔤 Installing CommitMono Nerd Font…"
 tmp_zip="$HOME/Downloads/CommitMono.zip"
 tmp_dir="$HOME/Downloads/CommitMono"
-curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CommitMono.zip -o "$tmp_zip"
+rm -rf "$tmp_dir" || true
+curl -fL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CommitMono.zip -o "$tmp_zip" || true
 mkdir -p "$tmp_dir"
-unzip -o "$tmp_zip" -d "$tmp_dir" >/dev/null || true
+unzip -o "$tmp_zip" -d "$tmp_dir" >/dev/null 2>&1 || true
 mkdir -p "$HOME/Library/Fonts"
-find "$tmp_dir" -name "*.otf" -maxdepth 2 -exec mv {} "$HOME/Library/Fonts/" \; 2>/dev/null || true
+find "$tmp_dir" -maxdepth 2 -name "*.otf" -exec mv {} "$HOME/Library/Fonts/" \; 2>/dev/null || true
 rm -rf "$tmp_dir" "$tmp_zip" || true
 echo "✅ Fonts installed"
 
 # Oh My Zsh
 echo -e "\n\n💻 Installing Oh My Zsh…"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-  # NOTE: this installer can change your default shell and may launch a new zsh
+  # Unattended so it doesn't hijack your shell session mid-script
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || true
 else
   echo "✅ Oh My Zsh already installed"
@@ -172,7 +176,7 @@ fi
 echo -e "\n\n✨ Installing zsh plugins…"
 brew install zsh-syntax-highlighting zsh-autosuggestions || true
 
-# Terminal tweaks
+# Terminal tweaks (Apple Terminal, not iTerm2)
 echo -e "\n\n⏰ Removing that “last login” message…"
 touch "$HOME/.hushlogin"
 echo "✅ Removed 'last login' message"
@@ -180,24 +184,8 @@ echo "✅ Removed 'last login' message"
 echo -e "\n\n🔧 Setting Terminal defaults…"
 defaults write com.apple.terminal "Default Window Settings" -string "Basic" || true
 defaults write com.apple.terminal "Startup Window Settings" -string "Basic" || true
-# Setting font size via plist is fragile across macOS versions; keep best-effort
 /usr/libexec/PlistBuddy -c "Set :Window\ Settings:Basic:Font:Size 14" "$HOME/Library/Preferences/com.apple.terminal.plist" 2>/dev/null || true
 
-# Spaceship theme (optional)
-echo -e "\n\n🚀 Installing Spaceship theme…"
-if [[ ! -d "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" ]]; then
-  git clone https://github.com/denysdovhan/spaceship-prompt.git "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" || true
-fi
-ln -sf "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" \
-       "$HOME/.oh-my-zsh/custom/themes/spaceship.zsh-theme" || true
-echo "✅ Spaceship prompt ready"
-
-# ---------------------------------------------------------------------------
-# DOTFILES: STOW
-# Your repo folders are:
-#   aliases borders brew git halloy iterm2 mtmr sketchybar skhd starship yabai zsh
-# We stow packages that map into $HOME. (macbook.sh is not a stow package.)
-# ---------------------------------------------------------------------------
 echo -e "\n\n🔗 Symlinking dotfiles with stow…"
 cd "$REPO_DIR"
 
@@ -217,22 +205,19 @@ backup "$HOME/.config/sketchybar"
 backup "$HOME/.config/borders"
 
 backup "$HOME/.config/yabai/yabairc"
-backup "$HOME/.config/yabai/skhdrc"
+backup "$HOME/.skhdrc"
 
 backup "$HOME/Library/Application Support/halloy"
-# MTMR commonly has real files already
 backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
 backup "$HOME/Library/Application Support/MTMR/items.json"
 backup "$HOME/Library/Application Support/MTMR/motivator.sh"
 
 # Optional: if you previously had legacy dotfiles at home, back them up too
-backup "$HOME/.skhdrc"
 backup "$HOME/.yabairc"
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
-backup "$HOME/.config/iterm2"
 
-# Stow packages into HOME (this must match your repo folders)
+# Stow packages into HOME (must mirror $HOME paths)
 stow -v -t "$HOME" \
   zsh \
   yabai \
@@ -242,17 +227,24 @@ stow -v -t "$HOME" \
   halloy \
   mtmr \
   borders \
-  iterm2 \
-  git \
-  brew
+  git
 
 echo "✅ Dotfiles symlinked."
 
 # Reload configurations (best-effort)
 echo -e "\n🔄 Reloading configurations…"
-command -v skhd >/dev/null 2>&1 && pkill -USR1 skhd && echo "✅ skhd config reloaded" || true
-command -v yabai >/dev/null 2>&1 && yabai --restart-service && echo "✅ yabai service restarted" || true
-command -v sketchybar >/dev/null 2>&1 && sketchybar --reload && echo "✅ SketchyBar reloaded" || true
+
+# Prefer brew services when available
+if command -v brew >/dev/null 2>&1; then
+  brew services restart skhd >/dev/null 2>&1 || true
+  brew services restart yabai >/dev/null 2>&1 || true
+fi
+
+# Signal reloads / restarts as fallback
+command -v skhd >/dev/null 2>&1 && pkill -USR1 skhd >/dev/null 2>&1 && echo "✅ skhd config reloaded" || true
+command -v yabai >/dev/null 2>&1 && yabai --restart-service >/dev/null 2>&1 && echo "✅ yabai service restarted" || true
+command -v sketchybar >/dev/null 2>&1 && sketchybar --reload >/dev/null 2>&1 && echo "✅ SketchyBar reloaded" || true
+
 echo -e "\n✅ Skhd, Sketchybar and Yabai setup complete"
 
 # Git configuration (prefer stowed files)
@@ -260,11 +252,12 @@ echo -e "\n📂 Setting up Git configuration…"
 if [[ -f "$HOME/.gitconfig" ]]; then
   echo "✅ .gitconfig present"
 fi
+
 if [[ -f "$HOME/.gitignore" ]]; then
   git config --global core.excludesfile "$HOME/.gitignore" || true
   echo "✅ Git global ignore set"
 else
-  echo "⚠️  No ~/.gitignore found; skipping excludesfile"
+  echo "⚠️ No ~/.gitignore found; skipping excludesfile"
 fi
 
 # macOS preferences (your existing tweaks)
@@ -318,6 +311,7 @@ echo -e "\n\n"
 # Reload shell config (best-effort)
 echo "🔄 Reloading shell…"
 if [[ -f "$HOME/.zshrc" ]]; then
+  # Sourcing zshrc from bash isn't perfect, but harmless best-effort
   # shellcheck disable=SC1090
   source "$HOME/.zshrc" || true
 fi

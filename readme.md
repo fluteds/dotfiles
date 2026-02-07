@@ -1,39 +1,44 @@
 # Dotfiles
 
-Dotfiles + rice for macOS. 🐈
+Rosé Pine inspired dotfiles + rice for macOS. 🐈
 
 This repo uses GNU Stow to symlink everything into place, so edits you make on your Mac are edits to the repo. No copying files around, no merging “local changes” back into version control.
+
+![A screenshot of a multi-window desktop setup on a macOS system. On the left is a Firefox browser window with the search bar visible and an unopened tab displaying the Firefox logo. The top right shows Discord with various channels and a chat thread visible. Below this is another IRC chat window Halloy with text. The macOS menu bar at the top shows various icons and the current time and date. On the right, there's a sidebar with multiple app icons displayed vertically.](assets/macos-rose-pine-v2.png)
 
 ## Setup
 
 All this can be setup with one bootstrap script.
 
-- Clone the repo into somewhere on your MacBook.
+- Clone the repo into somewhere on your MacBook (ideally on the `~/` home directory.)
 - Run `chmod +x ./setup.sh`
 - Then `./setup.sh`
 
-Note: Some parts of the setup require sudo. You will be prompted in the terminal when required.
+> [!IMPORTANT]
+> Some parts of the setup require `sudo`. You will be prompted in the terminal when required.
+>
+> Don't just run the script if you do not know what it does. Fork, review, edit what you do and don't need, then install.
 
 ## What’s included
 
-| Category        | Software |
+| Category       | Software |
 |----------------|----------|
-| Shell prompt    | [Oh My Zsh](https://ohmyz.sh) + Starship |
-| Window manager  | [yabai](https://github.com/koekeishiya/yabai), [skhd](https://github.com/koekeishiya/skhd), [borders](https://github.com/FelixKratz/JankyBorders) |
-| Touch Bar       | [MTMR](https://github.com/Toxblh/MTMR) |
-| Status bar      | [SketchyBar](https://github.com/felixhageloh/Sketchybar) |
-| Theme           | [Rosé Pine](https://rosepinetheme.com) |
-| IRC client      | [Halloy](https://halloy.squidowl.org) |
-| Editor          | [Visual Studio Code](https://code.visualstudio.com) |
-| Terminal        | iTerm2 |
+| Shell prompt   | [Oh My Zsh](https://ohmyz.sh) + [Starship](https://starship.rs) |
+| Window manager | [yabai](https://github.com/koekeishiya/yabai), [skhd](https://github.com/koekeishiya/skhd), [borders](https://github.com/FelixKratz/JankyBorders) |
+| Touch Bar      | [MTMR](https://github.com/Toxblh/MTMR) |
+| Status bar     | [SketchyBar](https://github.com/felixhageloh/Sketchybar) |
+| Theme          | [Rosé Pine](https://rosepinetheme.com) |
+| IRC client     | [Halloy](https://halloy.squidowl.org) |
+| Editor         | [Visual Studio Code](https://code.visualstudio.com) |
+| Terminal       | [iTerm2](https://iterm2.com) |
 
 ## How symlinking works
 
-Stow creates symlinks from your home directory to this repo. 
+Stow creates symlinks from your home directory to this repo.
 
 Example:
 
-- `~/.config/yabai/yabairc` -> `~/Documents/Repos/dotfiles/yabai/.config/yabai/yabairc`
+- `~/.config/yabai/yabairc` -> `~/dotfiles/yabai/.config/yabai/yabairc`
 
 That means you can edit config files normally and just commit changes like any other project. It all syncs and no more headscratching over merge conflicts.
 
