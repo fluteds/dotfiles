@@ -204,10 +204,10 @@ backup "$HOME/.config/starship.toml"
 backup "$HOME/.config/sketchybar"
 backup "$HOME/.config/borders"
 
-backup "$HOME/.config/yabai/yabairc"
+backup "$HOME/.yabairc"
 backup "$HOME/.skhdrc"
 
-backup "$HOME/Library/Application Support/halloy"
+backup "$HOME/.config/halloy"
 backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
 backup "$HOME/Library/Application Support/MTMR/items.json"
 backup "$HOME/Library/Application Support/MTMR/motivator.sh"
