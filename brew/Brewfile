@@ -3,7 +3,7 @@
 #  ———————————————————————————————————————————————————————————————————————————
 
 # For  yabai, skhd, borders
-brew tap "FelixKratz/formulae"
+tap "FelixKratz/formulae"
 
 # CLI tools
 brew "gh"
