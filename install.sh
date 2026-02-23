@@ -20,7 +20,7 @@ echo -e "\n\n🔐 Enter password"
 sudo -v
 
 # Keep sudo alive
-while true; do sudo -n true; sleep 300; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do sudo -n true; sleep 1000; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Detect Mac architecture / Homebrew prefix
 ARCH="$(uname -m)"
@@ -72,7 +72,8 @@ brew update
 brew upgrade || true
 
 # Brew bundle
-echo -e "\n\n📦 Installing Homebrew apps and CLI packages…"
+echo -e "\n\n📦 Installing Homebrew apps and CLI packages from brewfile…"
+echo -e "\nThis will take some time..."
 if [[ -f "$REPO_DIR/brew/Brewfile" ]]; then
   brew bundle --file "$REPO_DIR/brew/Brewfile"
 elif [[ -f "$REPO_DIR/Brewfile" ]]; then
@@ -212,7 +213,6 @@ backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
 backup "$HOME/Library/Application Support/MTMR/items.json"
 backup "$HOME/Library/Application Support/MTMR/motivator.sh"
 
-# Optional: if you previously had legacy dotfiles at home, back them up too
 backup "$HOME/.yabairc"
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
@@ -231,7 +231,7 @@ stow -v -t "$HOME" \
 
 echo "✅ Dotfiles symlinked."
 
-# Reload configurations (best-effort)
+# Reload configurations
 echo -e "\n🔄 Reloading configurations…"
 
 # Prefer brew services when available
@@ -308,10 +308,9 @@ echo -e "\n\n👩‍💻 Setup complete!"
 echo "✨💋🌈🍰🌻🌟💫🌱🐱🍿🍓"
 echo -e "\n\n"
 
-# Reload shell config (best-effort)
+# Reload shell config
 echo "🔄 Reloading shell…"
 if [[ -f "$HOME/.zshrc" ]]; then
-  # Sourcing zshrc from bash isn't perfect, but harmless best-effort
   # shellcheck disable=SC1090
   source "$HOME/.zshrc" || true
 fi

@@ -14,10 +14,12 @@ All this can be setup with one bootstrap script.
 - Run `chmod +x ./setup.sh`
 - Then `./setup.sh`
 
-> [!IMPORTANT]
-> Some parts of the setup require `sudo`. You will be prompted in the terminal when required.
->
+Some parts of the setup require `sudo`. You will be prompted in the terminal when required.
+
+> [!WARNING]
 > Don't just run the script if you do not know what it does. Fork, review, edit what you do and don't need, then install.
+
+For MacBooks without a touchbar, make sure to exclude `mtmr` from the brewfile.
 
 ## What’s included
 
@@ -76,7 +78,7 @@ Rotating windows
 - Shift + Option + X: flip on the x-axis
 - Shift + Option + Y: flip on the y-axis
 
-## Terminal CLI tools via Homebrew
+## Apps  via Homebrew
 
 <details>
 <summary>Core utilities & shell</summary>
@@ -161,7 +163,6 @@ Rotating windows
 | mosh | Remote terminal application |
 | telnet | Telnet client |
 | socat | Network connector |
-| pipes.sh | Terminal graphics animation |
 
 </details>
 
