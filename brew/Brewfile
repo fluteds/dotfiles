@@ -2,6 +2,9 @@
 #  Tell Homebrew what to do when we run `brew bundle`
 #  ———————————————————————————————————————————————————————————————————————————
 
+# For  yabai, skhd, borders
+brew tap "FelixKratz/formulae"
+
 # CLI tools
 brew "gh"
 brew "ffmpeg"
@@ -17,25 +20,22 @@ brew "pnpm"
 brew "jq"
 brew "lazygit"
 brew "just"
-brew "neovim"
 brew "starship"
 brew "tmux"
 brew "tree"
 brew "mosh"
 brew "docker"
 brew "docker-completion"
-brew "weechat"
-brew "irssi"
-brew "emacs"
 brew "spicetify-cli"
 brew "spotify_player"
 brew "yabai"
-brew "skhd"
+brew "asmvik/formulae/skhd"
 brew "fzf"
 brew "screenresolution"
 brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
+brew "yt-dlp"
 
 # Necessities 
 cask "iterm2"
@@ -43,25 +43,25 @@ cask "firefox@nightly"
 cask "visual-studio-code"
 cask "parsec"
 cask "mullvad-vpn"
-cask "mtmr"
+#cask "mtmr"
 cask "halloy"
 cask "google-chrome"
-cask "libreoffice"
+#cask "libreoffice"
 cask "qbittorrent"
 cask "fx-cast-bridge"
 cask "wine-stable"
 cask "obsidian"
 cask "home-assistant"
+cask "appcleaner"
 
 # Audio/video
 cask "audio-hijack"
 cask "loopback"
-cask "handbrake" 
-cask "obs"
+cask "handbrake-app" 
+#cask "obs"
 cask "vlc"
 cask "stolendata-mpv"
 cask "spotify"
-cask "yt-dlp"
 
 # Entertainment
 cask "discord"
