@@ -4,6 +4,7 @@
 
 # For  yabai, skhd, borders
 tap "FelixKratz/formulae"
+tap "koekeishiya/formulae"
 
 # CLI tools
 brew "gh"
@@ -29,7 +30,7 @@ brew "docker-completion"
 brew "spicetify-cli"
 brew "spotify_player"
 brew "yabai"
-brew "asmvik/formulae/skhd"
+brew "koekeishiya/formulae/skhd"
 brew "fzf"
 brew "screenresolution"
 brew "zsh-autosuggestions"

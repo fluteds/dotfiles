@@ -30,6 +30,13 @@ if [ -d "$alias_dir" ]; then
   done
 fi
 
+claude() {
+  print '⋆　      ⋏    ⪩⪨⋏　    ⟑    ⪩⪨⟑     ⋆'
+  print '    　  ⚞ ᴖ  ᴗ  ᴖ ⚟   ミo̶̶̷̤  ｡ o̴̶̷̤ミ'
+  print '      ♡ﾟ  づ🧋ど    ♡   づ🍵ど  *♡ﾟ'
+  command claude "$@"
+}
+
 
 # Common aliases
 alias python="python3"
