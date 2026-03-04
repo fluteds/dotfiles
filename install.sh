@@ -213,7 +213,6 @@ backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
 backup "$HOME/Library/Application Support/MTMR/items.json"
 backup "$HOME/Library/Application Support/MTMR/motivator.sh"
 
-backup "$HOME/.yabairc"
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
 

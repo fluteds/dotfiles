@@ -1,5 +1,5 @@
 [core]
-	excludesfile = /Users/autumn/Documents/Repos/keys/dotfiles/.gitignore
+	excludesfile = ~/.gitignore
 	editor = vim
 [credential]
 	helper = osxkeychain
@@ -11,7 +11,8 @@
 [help]
 	autocorrect = 1
 [merge]
-	conflictstyle = diff3[github]
+	conflictstyle = diff3
+[github]
 	user = fluteds
 [push]
 	default = simple
