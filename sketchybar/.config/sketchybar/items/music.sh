@@ -1,4 +1,4 @@
-#!/bin/env/bash
+#!/usr/bin/env bash
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 
 music=(

@@ -1,5 +1,5 @@
 # Load global styles, colors and icons
-source "$CONFIG_DIR/globalstyles.sh"
+source "$HOME/.config/sketchybar/globalstyles.sh"
 
 control_center=(
   icon=$ICON_CONTROLCENTER
