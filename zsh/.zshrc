@@ -37,11 +37,6 @@ claude() {
   command claude "$@"
 }
 
-
-# Common aliases
-alias python="python3"
-alias pip="pip3"
-
 # Editor
 export EDITOR="code --wait"
 

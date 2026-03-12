@@ -4,8 +4,6 @@ Rosé Pine inspired dotfiles + rice for macOS. 🐈
 
 This repo uses GNU Stow to symlink everything into place, so edits you make on your Mac are edits to the repo. No copying files around, no merging “local changes” back into version control.
 
-![A screenshot of a multi-window desktop setup on a macOS system. On the left is a Firefox browser window with the search bar visible and an unopened tab displaying the Firefox logo. The top right shows Discord with various channels and a chat thread visible. Below this is another IRC chat window Halloy with text. The macOS menu bar at the top shows various icons and the current time and date. On the right, there's a sidebar with multiple app icons displayed vertically.](assets/macos-rose-pine-v2.png)
-
 ## Setup
 
 All this can be setup with one bootstrap script.

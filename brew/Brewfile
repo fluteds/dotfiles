@@ -2,7 +2,7 @@
 #  Tell Homebrew what to do when we run `brew bundle`
 #  ———————————————————————————————————————————————————————————————————————————
 
-# For  yabai, skhd, borders
+# For yabai, skhd, borders
 tap "FelixKratz/formulae"
 tap "koekeishiya/formulae"
 
@@ -46,7 +46,6 @@ cask "mullvad-vpn"
 #cask "mtmr"
 cask "halloy"
 cask "google-chrome"
-#cask "libreoffice"
 cask "qbittorrent"
 cask "fx-cast-bridge"
 cask "wine-stable"
