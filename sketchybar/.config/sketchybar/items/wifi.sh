@@ -2,15 +2,13 @@ source "$HOME/.config/colors.sh"
 source "$HOME/.config/icons.sh"
 
 POPUP_OFF='sketchybar --set wifi popup.drawing=off'
-HOST_NAME=$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')
-
 wifi=(
   "${menu_defaults[@]}"
   script="$PLUGIN_DIR/wifi.sh"
   icon=$ICON_WIFI
   icon.font="Iosevka Comfy:Regular:16.0"
   icon.color=$COLOR_MAGENTA
-  label=$HOST_NAME
+  label="Connected"
   label.drawing=on
   popup.align=center
   popup.y_offset=3
@@ -55,18 +53,3 @@ sketchybar \
   \
   --add item wifi.off popup.wifi \
   --set wifi.off "${wifi_off[@]}"
-
-# sketchybar --add item wifi right \
-#   --set wifi script="$PLUGIN_DIR/wifi.sh" \
-#   update_freq=5 \
-#   padding_left=10 \
-#   padding_right=4 \
-#   background.border_width=0 \
-#   background.corner_radius=18 \
-#   background.height=24 \
-#   label.highlight=off \
-#   icon.color=$COLOR_MAGENTA \
-#   icon.highlight=off
-# #background.color=$COLOR_YELLOW
-#
-# icon.font="Iosevka Comfy:Regular:16.0"--subscribe wifi wifi_change
