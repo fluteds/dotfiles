@@ -87,6 +87,143 @@
   },
 */
   
+  // ─── Home Assistant ──────────────────────────────────────────────────────────
+
+  // Bed Lamp — tap to toggle, shows brightness % when on
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 5,
+    "bordered": false,
+    "width": 46,
+    "source": {
+      "inline": "/Users/autumn/.ha status light.bed_lamp"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha toggle light.bed_lamp\""
+        }
+      }
+    ]
+  },
+
+  // Desk Lamp
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 5,
+    "bordered": false,
+    "width": 50,
+    "source": {
+      "inline": "/Users/autumn/.ha status light.desk_lamp"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha toggle light.desk_lamp\""
+        }
+      }
+    ]
+  },
+
+  // Nanoleaf Shapes (shown as "NL" to save space)
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 5,
+    "bordered": false,
+    "width": 40,
+    "source": {
+      "inline": "/Users/autumn/.ha status light.nanoleaf_shapes NL"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha toggle light.nanoleaf_shapes\""
+        }
+      }
+    ]
+  },
+
+  // Brightness − / + for Bed Lamp
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 86400,
+    "bordered": false,
+    "width": 28,
+    "source": { "inline": "echo 🔅" },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha brightness_down light.desk_lamp\""
+        }
+      }
+    ]
+  },
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 86400,
+    "bordered": false,
+    "width": 28,
+    "source": { "inline": "echo 🔆" },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha brightness_up light.desk_lamp\""
+        }
+      }
+    ]
+  },
+
+  // Bedroom Fan Plug (shown as "Fan" to save space)
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 5,
+    "bordered": false,
+    "width": 46,
+    "source": {
+      "inline": "/Users/autumn/.ha status switch.wave_plug_uk Fan"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "appleScript",
+        "actionAppleScript": {
+          "inline": "do shell script \"/Users/autumn/.ha toggle switch.wave_plug_uk\""
+        }
+      }
+    ]
+  },
+
+  // Autumn — presence with room detail
+  {
+    "type": "shellScriptTitledButton",
+    "refreshInterval": 10,
+    "bordered": false,
+    "width": 68,
+    "source": {
+      "inline": "/Users/autumn/.ha where"
+    }
+  },
+
+  // Spacer after HA section
+  {
+    "type": "titledButton",
+    "title": "",
+    "width": 6,
+    "bordered": false
+  },
+
+  // ─── Media ───────────────────────────────────────────────────────────────────
+
   // Play/Pause
   {
     "type": "play",
