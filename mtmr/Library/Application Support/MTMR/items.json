@@ -87,138 +87,147 @@
   },
 */
   
-  // ─── Home Assistant 
-  // Bed Lamp - tap to toggle, shows brightness % when on
+  // Home Assistant group - tap 🏠 to expand
   {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 5,
+    "type": "group",
+    "title": "🏠 Home",
     "bordered": false,
-    "width": 46,
-    "source": {
-      "inline": "$HOME/.ha status light.bed_lamp"
-    },
-    "actions": [
+    "items": [
+
+      // Close button
       {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha toggle light.bed_lamp\""
+        "type": "close",
+        "bordered": false,
+        "width": 50
+      },
+
+      // Bed Lamp
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 5,
+        "bordered": false,
+        "width": 85,
+        "source": {
+          "inline": "$HOME/.ha status light.bed_lamp"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha toggle light.bed_lamp\""
+            }
+          }
+        ]
+      },
+
+      // Desk Lamp
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 5,
+        "bordered": false,
+        "width": 85,
+        "source": {
+          "inline": "$HOME/.ha status light.desk_lamp"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha toggle light.desk_lamp\""
+            }
+          }
+        ]
+      },
+
+      // Nanoleaf Shapes
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 5,
+        "bordered": false,
+        "width": 85,
+        "source": {
+          "inline": "$HOME/.ha status light.nanoleaf_shapes NL"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha toggle light.nanoleaf_shapes\""
+            }
+          }
+        ]
+      },
+
+      // Brightness − / +
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "source": { "inline": "echo '🔅 Dim'" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha brightness_down light.nanoleaf_shapes\""
+            }
+          }
+        ]
+      },
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "source": { "inline": "echo '🔆 Bright'" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha brightness_up light.nanoleaf_shapes\""
+            }
+          }
+        ]
+      },
+
+      // Bedroom Fan Plug
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 5,
+        "bordered": false,
+        "width": 70,
+        "source": {
+          "inline": "$HOME/.ha status switch.wave_plug_uk Fan"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha toggle switch.wave_plug_uk\""
+            }
+          }
+        ]
+      },
+
+
+      // Presence
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 5,
+        "bordered": false,
+        "width": 68,
+        "source": {
+          "inline": "$HOME/.ha where"
         }
       }
-    ]
-  },
 
-  // Desk Lamp
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 5,
-    "bordered": false,
-    "width": 50,
-    "source": {
-      "inline": "$HOME/.ha status light.desk_lamp"
-    },
-    "actions": [
-      {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha toggle light.desk_lamp\""
-        }
-      }
     ]
-  },
-
-  // Nanoleaf Shapes (shown as "NL" to save space)
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 5,
-    "bordered": false,
-    "width": 40,
-    "source": {
-      "inline": "$HOME/.ha status light.nanoleaf_shapes NL"
-    },
-    "actions": [
-      {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha toggle light.nanoleaf_shapes\""
-        }
-      }
-    ]
-  },
-
-  // Brightness − / +
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 86400,
-    "bordered": false,
-    "width": 28,
-    "source": { "inline": "echo 🔅" },
-    "actions": [
-      {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha brightness_down light.nanoleaf_shapes\""
-        }
-      }
-    ]
-  },
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 86400,
-    "bordered": false,
-    "width": 28,
-    "source": { "inline": "echo 🔆" },
-    "actions": [
-      {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha brightness_up light.nanoleaf_shapes\""
-        }
-      }
-    ]
-  },
-
-  // Bedroom Fan Plug (shown as "Fan" to save space)
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 5,
-    "bordered": false,
-    "width": 46,
-    "source": {
-      "inline": "$HOME/.ha status switch.wave_plug_uk Fan"
-    },
-    "actions": [
-      {
-        "trigger": "singleTap",
-        "action": "appleScript",
-        "actionAppleScript": {
-          "inline": "do shell script \"$HOME/.ha toggle switch.wave_plug_uk\""
-        }
-      }
-    ]
-  },
-
-  // Presence with room detail
-  {
-    "type": "shellScriptTitledButton",
-    "refreshInterval": 10,
-    "bordered": false,
-    "width": 68,
-    "source": {
-      "inline": "$HOME/.ha where"
-    }
-  },
-
-  // Spacer after HA section
-  {
-    "type": "titledButton",
-    "title": "",
-    "width": 6,
-    "bordered": false
   },
 
   // Media 
