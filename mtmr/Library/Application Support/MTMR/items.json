@@ -104,7 +104,7 @@
       // Bed Lamp
       {
         "type": "shellScriptTitledButton",
-        "refreshInterval": 5,
+        "refreshInterval": 15,
         "bordered": false,
         "width": 85,
         "source": {
@@ -124,7 +124,7 @@
       // Desk Lamp
       {
         "type": "shellScriptTitledButton",
-        "refreshInterval": 5,
+        "refreshInterval": 15,
         "bordered": false,
         "width": 85,
         "source": {
@@ -144,7 +144,7 @@
       // Nanoleaf Shapes
       {
         "type": "shellScriptTitledButton",
-        "refreshInterval": 5,
+        "refreshInterval": 15,
         "bordered": false,
         "width": 85,
         "source": {
@@ -161,13 +161,44 @@
         ]
       },
 
-      // Brightness − / +
+      // Bedtime scene
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 100,
+        "source": { "inline": "return \"🌙 Bedtime\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha scene_activate scene.bedtime\""
+            }
+          }
+        ]
+      },
+
+      // Presence
       {
         "type": "shellScriptTitledButton",
+        "refreshInterval": 15,
+        "align": "right",
+        "width": 80,
+        "source": {
+          "inline": "$HOME/.ha where"
+        }
+      },
+
+      // Brightness − / +
+      {
+        "type": "appleScriptTitledButton",
         "refreshInterval": 86400,
         "bordered": false,
         "width": 28,
-        "source": { "inline": "echo '🔅 Dim'" },
+        "align": "right",
+        "source": { "inline": "return \"🔅\"" },
         "actions": [
           {
             "trigger": "singleTap",
@@ -179,11 +210,12 @@
         ]
       },
       {
-        "type": "shellScriptTitledButton",
+        "type": "appleScriptTitledButton",
         "refreshInterval": 86400,
         "bordered": false,
         "width": 28,
-        "source": { "inline": "echo '🔆 Bright'" },
+        "align": "right",
+        "source": { "inline": "return \"🔆\"" },
         "actions": [
           {
             "trigger": "singleTap",
@@ -198,7 +230,7 @@
       // Bedroom Fan Plug
       {
         "type": "shellScriptTitledButton",
-        "refreshInterval": 5,
+        "refreshInterval": 15,
         "bordered": false,
         "width": 70,
         "source": {
@@ -215,17 +247,6 @@
         ]
       },
 
-
-      // Presence
-      {
-        "type": "shellScriptTitledButton",
-        "refreshInterval": 5,
-        "bordered": false,
-        "width": 68,
-        "source": {
-          "inline": "$HOME/.ha where"
-        }
-      }
 
     ]
   },
@@ -416,19 +437,19 @@
   },
 
   // Brightness down
-  { 
-    "type": "brightnessDown", 
-    "width": 24, 
+  {
+    "type": "brightnessDown",
+    "width": 24,
     "bordered": false,
-    "align": "right" 
+    "align": "right"
   },
-  
+
   // Brightness up
-  { 
-    "type": "brightnessUp", 
-    "width": 24, 
-    "bordered": false, 
-    "align": "right" 
+  {
+    "type": "brightnessUp",
+    "width": 24,
+    "bordered": false,
+    "align": "right"
   },
   // Battery
   {
