@@ -161,13 +161,59 @@
         ]
       },
 
+
+      // Brightness − / +
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "align": "right",
+        "source": { "inline": "echo 🔅" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha brightness_down\""
+            }
+          }
+        ]
+      },
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "align": "right",
+        "source": { "inline": "echo 🔆" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha brightness_up\""
+            }
+          }
+        ]
+      },
+
+      // Spacer
+      {
+        "type": "titledButton",
+        "title": "",
+        "align":"right",
+        "width": 8,
+        "bordered": false
+      },
+
       // Bedtime scene
       {
         "type": "appleScriptTitledButton",
         "refreshInterval": 86400,
         "bordered": false,
         "align": "right",
-        "width": 100,
+        "width": 85,
         "source": { "inline": "return \"🌙 Bedtime\"" },
         "actions": [
           {
@@ -175,6 +221,26 @@
             "action": "appleScript",
             "actionAppleScript": {
               "inline": "do shell script \"$HOME/.ha scene_activate scene.bedtime\""
+            }
+          }
+        ]
+      },
+
+
+      // Shading scene
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 100,
+        "source": { "inline": "return \"🪟 Shading\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha scene_activate scene.shading\""
             }
           }
         ]
@@ -189,42 +255,6 @@
         "source": {
           "inline": "$HOME/.ha where"
         }
-      },
-
-      // Brightness − / +
-      {
-        "type": "appleScriptTitledButton",
-        "refreshInterval": 86400,
-        "bordered": false,
-        "width": 28,
-        "align": "right",
-        "source": { "inline": "return \"🔅\"" },
-        "actions": [
-          {
-            "trigger": "singleTap",
-            "action": "appleScript",
-            "actionAppleScript": {
-              "inline": "do shell script \"$HOME/.ha brightness_down light.nanoleaf_shapes\""
-            }
-          }
-        ]
-      },
-      {
-        "type": "appleScriptTitledButton",
-        "refreshInterval": 86400,
-        "bordered": false,
-        "width": 28,
-        "align": "right",
-        "source": { "inline": "return \"🔆\"" },
-        "actions": [
-          {
-            "trigger": "singleTap",
-            "action": "appleScript",
-            "actionAppleScript": {
-              "inline": "do shell script \"$HOME/.ha brightness_up light.nanoleaf_shapes\""
-            }
-          }
-        ]
       },
 
       // Bedroom Fan Plug
