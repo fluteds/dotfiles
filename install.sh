@@ -195,7 +195,8 @@ find . -name ".DS_Store" -print -delete 2>/dev/null || true
 grep -qxF ".DS_Store" .gitignore 2>/dev/null || echo ".DS_Store" >> .gitignore
 
 # Ensure base dirs exist
-mkdir -p "$HOME/.config" "$HOME/.config/yabai" "$HOME/Library/Application Support"
+mkdir -p "$HOME/.config" "$HOME/.config/yabai" "$HOME/.config/skhd" "$HOME/Library/Application Support" \
+  "$HOME/Library/Application Support/iTerm2/ColorSchemes"
 
 # Back up known conflict targets (safe first-run behaviour)
 backup "$HOME/.zshrc"
@@ -207,6 +208,7 @@ backup "$HOME/.config/borders"
 
 backup "$HOME/.yabairc"
 backup "$HOME/.skhdrc"
+backup "$HOME/.config/skhd/skhdrc"
 
 backup "$HOME/.config/halloy"
 backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
@@ -230,17 +232,24 @@ stow -v -t "$HOME" \
 
 echo "✅ Dotfiles symlinked."
 
+# iTerm2 colour scheme
+if [[ -f "$REPO_DIR/iterm2/rose-pine.itermcolors" ]]; then
+  cp "$REPO_DIR/iterm2/rose-pine.itermcolors" \
+    "$HOME/Library/Application Support/iTerm2/ColorSchemes/rose-pine.itermcolors"
+  echo "✅ iTerm2 Rose Pine colour scheme installed"
+fi
+
 # Reload configurations
 echo -e "\n🔄 Reloading configurations…"
 
 # Prefer brew services when available
 if command -v brew >/dev/null 2>&1; then
-  brew services restart skhd >/dev/null 2>&1 || true
-  brew services restart yabai >/dev/null 2>&1 || true
+  brew services start skhd >/dev/null 2>&1 || brew services restart skhd >/dev/null 2>&1 || true
+  brew services start yabai >/dev/null 2>&1 || brew services restart yabai >/dev/null 2>&1 || true
 fi
 
 # Signal reloads / restarts as fallback
-command -v skhd >/dev/null 2>&1 && pkill -USR1 skhd >/dev/null 2>&1 && echo "✅ skhd config reloaded" || true
+command -v skhd >/dev/null 2>&1 && brew services restart skhd >/dev/null 2>&1 && echo "✅ skhd restarted" || true
 command -v yabai >/dev/null 2>&1 && yabai --restart-service >/dev/null 2>&1 && echo "✅ yabai service restarted" || true
 command -v sketchybar >/dev/null 2>&1 && sketchybar --reload >/dev/null 2>&1 && echo "✅ SketchyBar reloaded" || true
 
