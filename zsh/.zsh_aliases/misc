@@ -2,61 +2,64 @@
 #  Miscellaneous
 #  ———————————————————————————————————————————————————————————————————————————
 
-# 📼 yt-dlp: Download videos and audio from YouTube and other sites 
+# yt-dlp: Download videos and audio from YouTube and other sites 
 alias rip="yt-dlp"
 alias ripVideo="yt-dlp -f 'bestvideo' --recode-video mp4"  # Download best video quality
 alias ripAudio="yt-dlp -f 'bestaudio' --recode-video mp4"  # Download best audio quality
 alias subs="yt-dlp --recode-video mp4 --write-sub"  # 📝 Download subtitles
 alias ripPlaylist="yt-dlp -f 'bestaudio' --yes-playlist --recode-video mp4"  # 📼 Download entire playlist
 
-# 🌍 Internet utilities  
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"  # Get public IP address  
-alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"  # Flush DNS cache  
+# Internet utilities  
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"  # Get public IP address
+alias localip="ipconfig getifaddr en0"  # Get local network IP address
+alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"  # Flush DNS cache
 
-# 📞 Open/close programs for video meetings  
+# Open/close programs for video meetings  
 alias mtg="open -a 'Audio Hijack' && open -a Zoom" 
 alias mtgEnd="pkill 'Audio Hijack' && pkill Zoom" 
 
-# 📂 Navigation shortcuts
-alias ..="cd .."  # Go up one directory
+# Navigation shortcuts
+alias ..="cd .."      # Go up one directory
+alias ...="cd ../.."  # Go up two directories
+alias dots="cd ~/dotfiles"  # Go to dotfiles directory
 alias ls="ls -GFh"  # List files with colors and human-readable sizes
 function oc()  { cd "$HOME/Documents/notes" && claude "$@"; }  # Open notes + Claude
 function obc() { cd "$HOME/Documents/notes" && claude "$@"; }  # Open notes + Claude
 
-# 🔍 WHOIS lookup  
+# WHOIS lookup  
 # Use: `whois <domain.com>` to fetch domain info  
 function whois() {
   command whois $(echo $1 | sed -e 's|https?://||' -e 's|/||g')
 }
 
-# 🚫 Kill browser processes  
+# Kill browser processes  
 alias killchrome="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill" 
 alias killsafari="ps ux | grep '[S]afari' | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 alias killfirefox="ps ux | grep '[F]irefox Nightly' | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
-# 🗑️ Cleanup commands  
+# Cleanup commands  
 alias rm-empty='sudo find . -type d -empty -delete'  # Remove empty directories  
 alias rm-large='find . -size +100M -exec rm -i {} \;'  # Remove files larger than 100MB  
 alias rm-temp='find . -name "*.tmp" -exec rm -i {} \;'  # Remove temporary files
 alias bigfiles="find . -type f -size +100M -exec ls -lh {} \; | awk '{print $9, $5}'"  # List large files with size
 
-# 📂 Zip commands
+# Zip commands
 alias zipit="zip -r"  # Compress a folder: zipit archive.zip folder/
 alias unzipit="unzip"  # Extract zip files
 
-# 📖 File viewing commands
+# File viewing commands
 alias peek="bat"  # Use bat (better cat) if installed
 alias cat="bat --paging=never"  # Replace cat with bat if available
 
-# 📋 Todo.txt-cli commands
+# Todo.txt-cli commands
 alias todo="todo.sh" # todo.sh to todo
 alias t="todo.sh"  # Alias for todo.sh
 alias tl="todo.sh list"  # List all todo items
 alias ta="todo.sh add"  # Add a new todo item
 alias td="todo.sh done"  # Mark a todo item as done
 
-# 🌤️ Weather command
+# Weather command
 alias weather="wthrr && wthrr -f t"
 
-# 🎛️ Open Activity Monitor app
+# Open Activity Monitor app
 alias task="open -a 'Activity Monitor'"  

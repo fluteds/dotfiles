@@ -31,9 +31,11 @@ if [ -d "$alias_dir" ]; then
 fi
 
 claude() {
+  print ' '
   print '⋆　      ⋏    ⪩⪨⋏　    ⟑    ⪩⪨⟑     ⋆'
   print '    　  ⚞ ᴖ  ᴗ  ᴖ ⚟   ミo̶̶̷̤  ｡ o̴̶̷̤ミ'
   print '      ♡ﾟ  づ🧋ど    ♡   づ🍵ど  *♡ﾟ'
+  print ' '
   command claude "$@"
 }
 

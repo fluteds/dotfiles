@@ -17,6 +17,7 @@ alias editvs="open $HOME/Library/'Application Support'/Code/User/settings.json"
 
 # Homebrew helpers
 alias br="brew update"
+alias brewup="brew update && brew upgrade && brew cleanup"
 
 # Remove .DS_Store, mine enemy!
 alias dstore="find . -name '.DS_Store' -type f -delete"
@@ -28,4 +29,5 @@ alias edithosts="open /etc/hosts"
 alias python="python3"
 alias pip="pip3"
 
-alias treenm='tree -I "node_modules|dist|.git"' # Runs tree but excludes node_modules, dist  and .git files
+# Runs tree but excludes node_modules, dist  and .git files
+alias treenm='tree -I "node_modules|dist|.git"'
