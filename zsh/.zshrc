@@ -73,3 +73,7 @@ nvm() {
 node() { nvm use --silent >/dev/null 2>&1; command node "$@"; }
 npm()  { nvm use --silent >/dev/null 2>&1; command npm "$@"; }
 npx()  { nvm use --silent >/dev/null 2>&1; command npx "$@"; }
+
+eval "$(zoxide init zsh)"
+
+precmd() { mommy -1 -s $? }

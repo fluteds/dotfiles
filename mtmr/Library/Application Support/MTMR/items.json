@@ -198,6 +198,42 @@
         ]
       },
 
+      // Color temp cool / warm
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "align": "right",
+        "source": { "inline": "echo 🌨" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha color_temp_down\""
+            }
+          }
+        ]
+      },
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "align": "right",
+        "source": { "inline": "echo 🕯" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha color_temp_up\""
+            }
+          }
+        ]
+      },
+
       // Spacer
       {
         "type": "titledButton",
@@ -277,11 +313,215 @@
         ]
       },
 
+      // Curtains - status (tap = stop), ↑ tap +10% / hold = open, ↓ tap -10% / hold = close
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 15,
+        "bordered": false,
+        "width": 68,
+        "source": {
+          "inline": "$HOME/.ha cover_status cover.curtains"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha cover_stop cover.curtains\""
+            }
+          }
+        ]
+      },
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "source": { "inline": "echo ↑" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha cover_up cover.curtains\""
+            }
+          },
+          {
+            "trigger": "longTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha cover_open cover.curtains\""
+            }
+          }
+        ]
+      },
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "width": 28,
+        "source": { "inline": "echo ↓" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha cover_down cover.curtains\""
+            }
+          },
+          {
+            "trigger": "longTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha cover_close cover.curtains\""
+            }
+          }
+        ]
+      },
 
     ]
   },
 
-  // Media 
+  // Radiator + sensors
+  {
+    "type": "group",
+    "title": "🌡",
+    "bordered": false,
+    "items": [
+
+      { "type": "close", "bordered": false, "width": 50 },
+
+      // Radiator TRV - tap = +0.5°, double-tap = -0.5°
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 60,
+        "bordered": false,
+        "width": 100,
+        "source": {
+          "inline": "$HOME/.ha climate climate.bedroom_radiator_thermostat"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha climate_up climate.bedroom_radiator_thermostat\""
+            }
+          },
+          {
+            "trigger": "doubleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha climate_down climate.bedroom_radiator_thermostat\""
+            }
+          }
+        ]
+      },
+
+      // Wave plug power draw
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 30,
+        "bordered": false,
+        "width": 80,
+        "align": "right",
+        "source": {
+          "inline": "$HOME/.ha sensor sensor.wave_plug_uk_power ⚡"
+        }
+      }
+
+    ]
+  },
+
+  // Modes + scenes
+  {
+    "type": "group",
+    "title": "🎯",
+    "bordered": false,
+    "items": [
+
+      { "type": "close", "bordered": false, "width": 50 },
+
+      // Mode selector - tap to cycle (e.g. Home / Away / Relax)
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 30,
+        "bordered": false,
+        "width": 90,
+        "source": {
+          "inline": "$HOME/.ha input_select_status input_select.your_mode Mode"
+        },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha input_select_next input_select.your_mode\""
+            }
+          }
+        ]
+      },
+
+      // Morning scene
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 85,
+        "source": { "inline": "return \"🌅 Morning\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha scene_activate scene.morning\""
+            }
+          }
+        ]
+      },
+
+      // Evening scene
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 85,
+        "source": { "inline": "return \"🌆 Evening\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha scene_activate scene.evening\""
+            }
+          }
+        ]
+      },
+
+      // Rainy day script
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 100,
+        "source": { "inline": "return \"🌧️ Rainy Day\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha script script.rainy_day_mode\""
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // Media
   // Play/Pause
   {
     "type": "play",
