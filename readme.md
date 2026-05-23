@@ -29,8 +29,9 @@ Some parts of the setup require `sudo`. You will be prompted in the terminal whe
 | Status bar     | [SketchyBar](https://github.com/felixhageloh/Sketchybar) |
 | Theme          | [Rosé Pine](https://rosepinetheme.com) |
 | IRC client     | [Halloy](https://halloy.squidowl.org) |
-| Editor         | [Visual Studio Code](https://code.visualstudio.com) |
-| Terminal       | [iTerm2](https://iterm2.com) |
+| Editor         | [Neovim](https://neovim.io) |
+| Terminal       | [Ghostty](https://ghostty.org) |
+| File manager   | [Yazi](https://yazi-rs.github.io) |
 
 ## How symlinking works
 
@@ -45,10 +46,6 @@ That means you can edit config files normally and just commit changes like any o
 ## Keybinds
 
 ### Yabai (via skhd)
-
-Terminal
-
-- Option + Return: open terminal
 
 System stats (via SketchyBar scripts)
 
@@ -96,6 +93,7 @@ Setting insertion point
 Floating windows
 
 - Shift + Option + Space: float / unfloat window
+- Option + C: float focused window and center it (press again to retile)
 
 Fullscreen
 
@@ -105,3 +103,9 @@ Fullscreen
 Restart Yabai
 
 - Shift + Control + Option + R: restart Yabai
+
+App focus
+
+- Option + B: Firefox Nightly
+- Option + O: Obsidian
+- Option + T: Ghostty

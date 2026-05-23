@@ -3,17 +3,15 @@
 #  ———————————————————————————————————————————————————————————————————————————
 
 # Update/reload git config
-alias editgit="open ~/.gitconfig"
+alias editgit="$EDITOR ~/.gitconfig"
 
 # Update/reload shell configs
 alias reloadshell="exec ${SHELL} -l"
-alias editbash="open ~/.bash_profile"
-alias reloadbash='source ~/.bash_profile && echo "Done!"'
-alias editzsh="open ~/.zshrc"
+alias editzsh="$EDITOR ~/.zshrc"
 alias reload='clear && source ~/.zshrc && echo -e "$fg_bold[yellow] nice~ 👌"'
 
-# Update VS Code config
-alias editvs="open $HOME/Library/'Application Support'/Code/User/settings.json"
+# Update VS Code config (keep for heavy projects)
+alias editvs="code $HOME/Library/'Application Support'/Code/User/settings.json"
 
 # Homebrew helpers
 alias br="brew update"
@@ -23,7 +21,7 @@ alias brewup="brew update && brew upgrade && brew cleanup"
 alias dstore="find . -name '.DS_Store' -type f -delete"
 
 # Edit /etc/hosts file
-alias edithosts="open /etc/hosts"
+alias edithosts="sudo $EDITOR /etc/hosts"
 
 # Python
 alias python="python3"

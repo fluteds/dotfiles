@@ -1,0 +1,51 @@
+# Rose Pine theme for Yazi
+[manager]
+cwd = { fg = "#31748f" }
+
+hovered         = { fg = "#e0def4", bg = "#403d52" }
+preview_hovered = { underline = true }
+
+find_keyword  = { fg = "#f6c177", italic = true }
+find_position = { fg = "#eb6f92", bg = "reset", italic = true }
+
+marker_copied = { fg = "#f6c177", bg = "#f6c177" }
+marker_cut    = { fg = "#eb6f92", bg = "#eb6f92" }
+marker_selected = { fg = "#9ccfd8", bg = "#9ccfd8" }
+
+tab_active   = { fg = "#191724", bg = "#e0def4" }
+tab_inactive = { fg = "#e0def4", bg = "#403d52" }
+
+count_copied   = { fg = "#191724", bg = "#f6c177" }
+count_cut      = { fg = "#191724", bg = "#eb6f92" }
+count_selected = { fg = "#191724", bg = "#9ccfd8" }
+
+border_symbol = "│"
+border_style  = { fg = "#403d52" }
+
+[status]
+separator_open  = ""
+separator_close = ""
+
+[input]
+border   = { fg = "#31748f" }
+title    = { fg = "#31748f" }
+value    = { fg = "#e0def4" }
+selected = { reversed = true }
+
+[select]
+border   = { fg = "#31748f" }
+active   = { fg = "#eb6f92" }
+inactive = { fg = "#6e6a86" }
+
+[tasks]
+border  = { fg = "#31748f" }
+title   = {}
+hovered = { underline = true }
+
+[which]
+mask            = { bg = "#26233a" }
+cand            = { fg = "#9ccfd8" }
+rest            = { fg = "#6e6a86" }
+desc            = { fg = "#e0def4" }
+separator       = "  "
+separator_style = { fg = "#403d52" }

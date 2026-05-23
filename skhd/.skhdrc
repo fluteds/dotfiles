@@ -1,5 +1,5 @@
 # Opens terminal
-alt - return : "${HOME}"/.config/yabai/scripts/open_terminal.sh
+#alt - return : "${HOME}"/.config/yabai/scripts/open_terminal.sh
 
 # Show system statistics
 fn + lalt - 1 : "${HOME}"/.config/yabai/scripts/show_cpu.sh
@@ -73,3 +73,12 @@ shift + lctrl + alt - r : \
 # Make window native fullscreen
 alt - f         : yabai -m window --toggle zoom-fullscreen
 shift + alt - f : yabai -m window --toggle native-fullscreen
+
+# Float focused window and center it (toggle: press again to retile)
+alt - c : yabai -m window --toggle float; \
+          yabai -m window --grid 6:6:1:1:4:4
+
+# App focus
+alt - b : open -a "Firefox Nightly"
+alt - o : open -a "Obsidian"
+alt - t : open -a "CuteGhostty"

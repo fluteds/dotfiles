@@ -36,6 +36,14 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 brew "yt-dlp"
+brew "neovim"
+brew "yazi"
+brew "btop"
+brew "bookokrat"
+brew "aerc"
+brew "weechat"
+brew "zoxide"
+# hass-cli: pip install homeassistant-cli
 
 # Necessities 
 cask "iterm2"
@@ -45,12 +53,12 @@ cask "visual-studio-code"
 cask "parsec"
 cask "mullvad-vpn"
 #cask "mtmr"
-cask "halloy"
+#cask "halloy"     # replaced by weechat
 #cask "google-chrome"
 cask "qbittorrent"
 cask "fx-cast-bridge"
 cask "wine-stable"
-cask "obsidian"
+#cask "obsidian"   # replaced by neovim + obsidian.nvim
 cask "home-assistant"
 cask "appcleaner"
 
@@ -61,10 +69,10 @@ cask "handbrake-app"
 #cask "obs"
 cask "vlc"
 cask "stolendata-mpv"
-cask "spotify"
+#cask "spotify"    # replaced by spotify_player
 
 # Entertainment
-cask "discord"
+#cask "discord"    # install discordo via: go install github.com/ayn2op/discordo@latest
 cask "steam"
 cask "virtualdj"
 cask "crossover"

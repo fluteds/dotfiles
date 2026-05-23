@@ -23,8 +23,24 @@ alias ..="cd .."      # Go up one directory
 alias ...="cd ../.."  # Go up two directories
 alias dots="cd ~/dotfiles"  # Go to dotfiles directory
 alias ls="ls -GFh"  # List files with colors and human-readable sizes
-function oc()  { cd "$HOME/Documents/notes" && claude "$@"; }  # Open notes + Claude
-function obc() { cd "$HOME/Documents/notes" && claude "$@"; }  # Open notes + Claude
+function oc()  { cd "$HOME/Documents/Notes" && nvim "$@"; }  # Open notes in nvim
+function obc() { cd "$HOME/Documents/Notes" && nvim "$@"; }  # Open notes in nvim
+
+# Terminal app shortcuts
+alias music="spotify_player"
+function yy() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+alias files="yy"
+alias irc="weechat"
+alias books="bookokrat"
+alias mail="aerc"
+alias notes="cd ~/Documents/Notes && nvim ."
 
 # WHOIS lookup  
 # Use: `whois <domain.com>` to fetch domain info  
@@ -61,5 +77,5 @@ alias td="todo.sh done"  # Mark a todo item as done
 # Weather command
 alias weather="wthrr && wthrr -f t"
 
-# Open Activity Monitor app
-alias task="open -a 'Activity Monitor'"  
+# System monitor
+alias task="btop"

@@ -39,13 +39,15 @@ claude() {
   command claude "$@"
 }
 
-# Editor
-export EDITOR="code --wait"
+# Editor (nvim for terminal, code for heavy GUI projects)
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 # PATH additions (avoid duplicates)
 path=(
   "$HOME/scripts"
   "$HOME/.local/bin"
+  "$HOME/go/bin"
   $path
 )
 typeset -U path PATH
@@ -75,5 +77,13 @@ npm()  { nvm use --silent >/dev/null 2>&1; command npm "$@"; }
 npx()  { nvm use --silent >/dev/null 2>&1; command npx "$@"; }
 
 eval "$(zoxide init zsh)"
+
+# fzf keybindings + completion
+if [ -n "$HOMEBREW_PREFIX" ]; then
+  [ -f "$HOMEBREW_PREFIX/opt/fzf/shell/keybindings.zsh" ] && \
+    source "$HOMEBREW_PREFIX/opt/fzf/shell/keybindings.zsh"
+  [ -f "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh" ] && \
+    source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh"
+fi
 
 precmd() { mommy -1 -s $? }
