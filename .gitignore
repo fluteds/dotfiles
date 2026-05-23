@@ -2,5 +2,5 @@
 .gitconfig
 
 # Halloy
-config.toml
-pass
+halloy/.config/halloy/config.toml
+halloy/.config/halloy/pass

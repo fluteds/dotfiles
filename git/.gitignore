@@ -8,6 +8,3 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *.log
-.sass-cache
-*.sublime-workspace
-*.DS_Store
