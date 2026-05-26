@@ -1,6 +1,7 @@
 sketchybar --add event window_change
 
-COLORS_SPACE=($COLOR_YELLOW $COLOR_CYAN $COLOR_MAGENTA $COLOR_WHITE $COLOR_BLUE $COLOR_RED $COLOR_WHITE_BRIGHT)
+COLORS_SPACE=($COLOR_YELLOW $COLOR_YELLOW $COLOR_YELLOW $COLOR_YELLOW $COLOR_YELLOW $COLOR_YELLOW $COLOR_YELLOW)
+ICON_DIM=0x55e0def4
 LENGTH=${#ICONS_SPACE[@]}
 
 for i in "${!ICONS_SPACE[@]}"; do
@@ -19,12 +20,12 @@ for i in "${!ICONS_SPACE[@]}"; do
     padding_right=$PAD_RIGHT \
     background.color=${COLORS_SPACE[i]} \
     background.border_width=0 \
-    background.corner_radius=20 \
+    background.corner_radius=12 \
     background.height=24 \
     update_freq=5 \
     icon=${ICONS_SPACE[i]} \
-    icon.color=${COLORS_SPACE[i]} \
-    label.color=${COLORS_SPACE[i]} \
+    icon.color=$ICON_DIM \
+    label.color=$ICON_DIM \
     --subscribe space.$sid front_app_switched window_change window_focus space_change title_change
 done
 

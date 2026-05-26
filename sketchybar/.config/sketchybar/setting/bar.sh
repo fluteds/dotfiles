@@ -1,9 +1,9 @@
 sketchybar --bar color=$COLOR_BACKGROUND \
-  height=30 \
-  y_offset=4 \
+  height=34\
+  y_offset=0 \
   padding_left=4 \
   padding_right=6 \
-  corner_radius=18 \
+  corner_radius=0 \
   topmost=off \
-  margin=4 \
+  margin=0 \
   position=top \

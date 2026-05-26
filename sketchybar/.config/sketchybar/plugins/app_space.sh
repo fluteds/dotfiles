@@ -11,7 +11,7 @@ sketchybar --set $NAME background.drawing=$SELECTED \
 	label.highlight=$SELECTED \
   update_freq=5             \
   click_script="sketchybar --update" \
-  background.corner_radius=8
+  background.corner_radius=20
 
 if [[ $SENDER == "front_app_switched" || $SENDER == "window_change" ]];
 then

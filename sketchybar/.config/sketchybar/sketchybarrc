@@ -36,9 +36,9 @@ sketchybar --add item new_space_button left \
              label=􀅼 \
              label.padding_right=15 \
              click_script="$HOME/.config/sketchybar/plugins/new_space.sh" \
-             background.color=0x44ffffff \
-             background.corner_radius=5 \
-             background.height=20
+             background.color=$COLOR_BL \
+             background.corner_radius=8 \
+             background.height=22
 
 # Add Remove Space button
 sketchybar --add item remove_space_button left \
@@ -46,9 +46,9 @@ sketchybar --add item remove_space_button left \
              label=􀅽 \
              label.padding_right=15 \
              click_script="$HOME/.config/sketchybar/plugins/close_empty_spaces.sh" \
-             background.color=0x44ffffff \
-             background.corner_radius=5 \
-             background.height=20
+             background.color=$COLOR_BL \
+             background.corner_radius=8 \
+             background.height=22
 #source "$ITEM_DIR/window_title.sh"
 #-----------------------------------------------#
 
@@ -63,11 +63,28 @@ sketchybar --add item remove_space_button left \
  #source "$ITEM_DIR/keyboard.sh"
  #source "$ITEM_DIR/backlight.sh"
  source "$ITEM_DIR/volume.sh"
+ source "$ITEM_DIR/cpu.sh"
 #-------------------------------------------------#
 
 #---------------Adding Center Items--------------#
 source "$ITEM_DIR/music.sh"
 #------------------------------------------------#
+
+#---------------Bracket Groups-------------------#
+
+sketchybar --add bracket bracket.datetime time date \
+  --set bracket.datetime \
+    background.color=$COLOR_BL \
+    background.corner_radius=10 \
+    background.height=26
+
+sketchybar --add bracket bracket.sysinfo cpu volume_icon volume wifi battery bluetooth \
+  --set bracket.sysinfo \
+    background.color=$COLOR_BL \
+    background.corner_radius=10 \
+    background.height=26
+
+#-------------------------------------------------#
 
 #---------------Finalizing Setup------------------#
 

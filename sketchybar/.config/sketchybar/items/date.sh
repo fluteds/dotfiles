@@ -6,7 +6,7 @@ sketchybar --add item date right \
   background.border_width=0 \
   background.corner_radius=16 \
   background.height=24 \
-  icon.color=$COLOR_CYAN \
+  icon.color=$COLOR_WHITE_BRIGHT \
   icon=$ICON_CALENDAR
 #background.color=$COLOR_CYAN \
 #label.highlight=on

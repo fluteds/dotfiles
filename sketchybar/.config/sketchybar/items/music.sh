@@ -8,14 +8,15 @@ music=(
   padding_left=4
   label.padding_right=10
   label.padding_left=10
-  label.highlight=on
+  label.color=$COLOR_YELLOW
   padding_right=4
   drawing=off
   label="Loading…"
   background.corner_radius=16
-  background.color=$COLOR_WHITE_BRIGHT
+  background.color=$COLOR_BL2
   label.max_chars=50
   click_script="sketchybar --set music drawing=off"
+  update_freq=5
   updates=on
   --subscribe music media_change
 )

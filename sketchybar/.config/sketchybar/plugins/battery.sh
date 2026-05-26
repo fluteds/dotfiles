@@ -53,7 +53,7 @@ render_item() {
     ICON="􀢋"
   fi
 
-  sketchybar --set $NAME icon=$ICON icon.color=$COLOR_GREEN label=$PERCENTAGE% label.color=$COLOR_WHITE_BRIGHT label.drawing=$DRAWING
+  sketchybar --set $NAME icon=$ICON icon.color=$COLOR label=$PERCENTAGE% label.color=$LABEL label.drawing=$DRAWING
 }
 
 save_label_state() {

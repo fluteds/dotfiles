@@ -7,7 +7,7 @@ sketchybar --add item time right \
   background.corner_radius=18 \
   background.height=24 \
   icon=$ICON_CLOCK \
-  icon.color=$COLOR_RED \
+  icon.color=$COLOR_WHITE_BRIGHT \
   icon.highlight=off \
   label.highlight=off
 #background.color=$COLOR_MAGENTA \
