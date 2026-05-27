@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-blacklist=(
-    "CARROTweather"
-)
+borders blacklist="CARROT Weather"
