@@ -391,12 +391,60 @@
 
       { "type": "close", "bordered": false, "width": 50 },
 
-      // Radiator TRV - tap = +0.5°, double-tap = -0.5°
+      // Outside temp (weather station)
       {
         "type": "shellScriptTitledButton",
         "refreshInterval": 60,
         "bordered": false,
-        "width": 100,
+        "width": 80,
+        "source": {
+          "inline": "$HOME/.ha temp sensor.st_00184051_temperature 🌤"
+        }
+      },
+      { "type": "titledButton", "title": "", "width": 10, "bordered": false },
+
+      // Bedroom temp
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 60,
+        "bordered": false,
+        "width": 80,
+        "source": {
+          "inline": "$HOME/.ha temp sensor.bedroom_temperature_sensor_temperature 🛏"
+        }
+      },
+      { "type": "titledButton", "title": "", "width": 10, "bordered": false },
+
+      // Bathroom temp
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 60,
+        "bordered": false,
+        "width": 80,
+        "source": {
+          "inline": "$HOME/.ha temp sensor.bathroom_temperature_sensor_temperature 🚿"
+        }
+      },
+      { "type": "titledButton", "title": "", "width": 10, "bordered": false },
+
+      // Playroom temp
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 60,
+        "bordered": false,
+        "width": 80,
+        "source": {
+          "inline": "$HOME/.ha temp sensor.playroom_temperature_temperature 🎮"
+        }
+      },
+
+      // Radiator TRV - tap = +0.5°, double-tap = -0.5°
+      {
+        "type": "shellScriptTitledButton",
+        "refreshInterval": 60,
+        "align": "right",
+        "bordered": false,
+        "width": 125,
         "source": {
           "inline": "$HOME/.ha climate climate.bedroom_radiator_thermostat"
         },
@@ -495,6 +543,25 @@
             "action": "appleScript",
             "actionAppleScript": {
               "inline": "do shell script \"$HOME/.ha scene_activate scene.evening\""
+            }
+          }
+        ]
+      },
+
+      // Cooling script
+      {
+        "type": "appleScriptTitledButton",
+        "refreshInterval": 86400,
+        "bordered": false,
+        "align": "right",
+        "width": 85,
+        "source": { "inline": "return \"🧊 Cooling\"" },
+        "actions": [
+          {
+            "trigger": "singleTap",
+            "action": "appleScript",
+            "actionAppleScript": {
+              "inline": "do shell script \"$HOME/.ha script script.cooling_mode\""
             }
           }
         ]

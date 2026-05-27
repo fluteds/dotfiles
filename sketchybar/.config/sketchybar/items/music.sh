@@ -15,6 +15,7 @@ music=(
   background.corner_radius=16
   background.color=$COLOR_BL2
   label.max_chars=50
+  label.scroll_duration=600
   click_script="sketchybar --set music drawing=off"
   update_freq=5
   updates=on
