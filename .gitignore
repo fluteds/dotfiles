@@ -4,3 +4,7 @@
 # Halloy
 halloy/.config/halloy/config.toml
 halloy/.config/halloy/pass
+halloy/.config/halloy/targets
+halloy/.config/halloy/history
+halloy/.config/halloy/*.log
+halloy/.config/halloy/*.json
