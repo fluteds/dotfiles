@@ -54,11 +54,8 @@ cask "parsec"
 cask "mullvad-vpn"
 #cask "mtmr"
 #cask "halloy"     # replaced by weechat
-#cask "google-chrome"
-cask "qbittorrent"
-cask "fx-cast-bridge"
 cask "wine-stable"
-#cask "obsidian"   # replaced by neovim + obsidian.nvim
+cask "obsidian"     # replaced by neovim + obsidian.nvim
 cask "home-assistant"
 cask "appcleaner"
 
@@ -69,10 +66,10 @@ cask "handbrake-app"
 #cask "obs"
 cask "vlc"
 cask "stolendata-mpv"
-#cask "spotify"    # replaced by spotify_player
+cask "spotify"     # replaced by spotify_player
 
 # Entertainment
-#cask "discord"    # install discordo via: go install github.com/ayn2op/discordo@latest
+cask "discord"     # install discordo via: go install github.com/ayn2op/discordo@latest
 cask "steam"
 cask "virtualdj"
 cask "crossover"

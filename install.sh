@@ -86,6 +86,17 @@ echo -e "\n\n=================================================="
 echo "🚮 Cleaning up any old brews or casks…"
 brew cleanup || true
 
+# Permissions for yabai and skhd
+echo -e "\n\n🔐 yabai and skhd need Accessibility and Screen Recording permissions."
+echo "   Opening Accessibility settings — add yabai and skhd if not already listed."
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+echo "   Press Enter when done…"
+read -r
+echo "   Opening Screen Recording settings — add yabai if not already listed."
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"
+echo "   Press Enter when done…"
+read -r
+
 # GNU Stow
 if ! command -v stow >/dev/null 2>&1; then
   echo -e "\n\n🔗 Installing GNU Stow…"
@@ -125,6 +136,13 @@ fi
 
 # Spicetify
 echo -e "\n\n🎵 Installing Spicetify…"
+if [[ ! -d "$HOME/Library/Application Support/Spotify" ]]; then
+  echo "   Spotify needs to be launched at least once before Spicetify can be installed."
+  echo "   Opening Spotify now — log in, let it load, then quit it."
+  open -a Spotify 2>/dev/null || echo "⚠️ Could not open Spotify — make sure it's installed first."
+  echo "   Press Enter when done…"
+  read -r
+fi
 brew install spicetify-cli || true
 if command -v spicetify >/dev/null 2>&1; then
   spicetify backup || true
@@ -211,9 +229,9 @@ backup "$HOME/.skhdrc"
 backup "$HOME/.config/skhd/skhdrc"
 
 backup "$HOME/.config/halloy"
-backup "$HOME/Library/Application Support/MTMR/frogradio.scpt"
-backup "$HOME/Library/Application Support/MTMR/items.json"
-backup "$HOME/Library/Application Support/MTMR/motivator.sh"
+backup "$HOME/.config/nvim"
+backup "$HOME/.tmux.conf"
+backup "$HOME/.config/yazi"
 
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
@@ -228,7 +246,10 @@ stow -v -t "$HOME" \
   halloy \
   mtmr \
   borders \
-  git
+  git \
+  nvim \
+  tmux \
+  yazi
 
 echo "✅ Dotfiles symlinked."
 
