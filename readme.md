@@ -6,7 +6,7 @@ This repo uses GNU Stow to symlink everything into place, so edits you make on y
 
 ## Setup
 
-All this can be setup with one bootstrap script.
+All this can be set up *nearly* automatically with one bootstrap script.
 
 - Clone the repo into somewhere on your MacBook (ideally on the `~/` home directory.)
 - Run `./install.sh`
@@ -18,6 +18,8 @@ Some parts of the setup require `sudo`. You will be prompted in the terminal whe
 
 > [!NOTE]
 > MTMR is commented out in the Brewfile by default uncomment it if you have a Touch Bar Mac.
+>
+> As of May 2026, I do not use a touchbar MacBook, so the scripts might break over time. I have no way of testing them.
 
 ## What's included
 

@@ -180,7 +180,22 @@ unzip -o "$tmp_zip" -d "$tmp_dir" >/dev/null 2>&1 || true
 mkdir -p "$HOME/Library/Fonts"
 find "$tmp_dir" -maxdepth 2 -name "*.otf" -exec mv {} "$HOME/Library/Fonts/" \; 2>/dev/null || true
 rm -rf "$tmp_dir" "$tmp_zip" || true
-echo "✅ Fonts installed"
+echo "✅ CommitMono fonts installed"
+
+# Fonts (Iosevka Comfy) — fonts live in the repo itself, no releases
+echo -e "\n\n🔤 Installing Iosevka Comfy fonts…"
+tmp_dir="$HOME/Downloads/iosevka-comfy-repo"
+rm -rf "$tmp_dir" || true
+git clone --depth 1 https://github.com/protesilaos/iosevka-comfy.git "$tmp_dir" || true
+mkdir -p "$HOME/Library/Fonts"
+font_count=$(find "$tmp_dir" -path "*/TTF/*.ttf" | wc -l | tr -d ' ')
+if [[ "$font_count" -gt 0 ]]; then
+  find "$tmp_dir" -path "*/TTF/*.ttf" -exec cp {} "$HOME/Library/Fonts/" \; 2>/dev/null || true
+  echo "✅ Iosevka Comfy fonts installed (${font_count} files)"
+else
+  echo "⚠️ No Iosevka Comfy font files found; skipping"
+fi
+rm -rf "$tmp_dir" || true
 
 # Oh My Zsh
 echo -e "\n\n💻 Installing Oh My Zsh…"
@@ -232,6 +247,7 @@ backup "$HOME/.config/halloy"
 backup "$HOME/.config/nvim"
 backup "$HOME/.tmux.conf"
 backup "$HOME/.config/yazi"
+backup "$HOME/.config/ghostty"
 
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
@@ -249,7 +265,8 @@ stow -v -t "$HOME" \
   git \
   nvim \
   tmux \
-  yazi
+  yazi \
+  ghostty
 
 echo "✅ Dotfiles symlinked."
 

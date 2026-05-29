@@ -19,3 +19,5 @@
 [user]
 	name = fluteds
 	email = fluteds@users.noreply.github.com
+[url "https://github.com/"]
+	insteadOf = git@github.com:
