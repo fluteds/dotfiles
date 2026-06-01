@@ -1,0 +1,32 @@
+  TMUX KEYBINDS CHEATSHEET        prefix = C-a
+  ════════════════════════════════════════════
+
+  SESSIONS & WINDOWS
+  prefix + c          New window (cwd)
+  prefix + ,          Rename window
+  prefix + &          Kill window
+  prefix + s          List sessions
+  prefix + $          Rename session
+  prefix + d          Detach session
+  prefix + 0-9        Switch window
+
+  PANES
+  prefix + |          Split vertical (cwd)
+  prefix + -          Split horizontal (cwd)
+  prefix + h/j/k/l    Navigate panes
+  prefix + H/J/K/L    Resize pane (repeatable)
+  prefix + x          Kill pane
+  prefix + z          Zoom pane (toggle fullscreen)
+  prefix + {/}        Swap pane left/right
+
+  COPY MODE
+  prefix + Enter      Enter copy mode
+  v                   Begin selection
+  y                   Copy to clipboard
+  q                   Quit copy mode
+
+  OTHER
+  prefix + r          Reload tmux config
+  prefix + /          Show this help
+  prefix + ?          List all keybinds
+  prefix + :          Command prompt

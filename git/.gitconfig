@@ -1,6 +1,13 @@
 [core]
 	excludesfile = ~/.gitignore
 	editor = vim
+	pager = delta
+[delta]
+	navigate = true
+	side-by-side = true
+	line-numbers = true
+[interactive]
+	diffFilter = delta --color-only
 [credential]
 	helper = osxkeychain
 [filter "lfs"]

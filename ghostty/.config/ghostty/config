@@ -21,5 +21,8 @@ palette = 12=#9ccfd8
 palette = 13=#c4a7e7
 palette = 14=#ebbcba
 palette = 15=#e0def4
+
 font-family = Iosevka Comfy
 macos-icon = holographic
+macos-titlebar-proxy-icon = hidden
+macos-titlebar-style = transparent

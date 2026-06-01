@@ -1,0 +1,18 @@
+#  ———————————————————————————————————————————————————————————————————————————
+#  Functions
+#  ———————————————————————————————————————————————————————————————————————————
+
+# mkdir + cd in one: `mkcd my-new-dir`
+mkcd() { mkdir -p "$1" && cd "$1" }
+
+# Go up N directories: `up 3`
+up() { local p=''; for i in $(seq 1 ${1:-1}); do p+='../'; done; cd "$p" }
+
+# Quick local HTTP server: `serve` or `serve 3000`
+serve() { python3 -m http.server "${1:-8080}" }
+
+# Show what's listening on ports: `ports` or `ports 3000`
+ports() { lsof -iTCP${1:+:$1} -sTCP:LISTEN -P }
+
+# Copy last command to clipboard
+copylast() { fc -ln -1 | pbcopy && echo "copied" }

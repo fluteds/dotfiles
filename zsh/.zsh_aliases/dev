@@ -29,3 +29,5 @@ alias pip="pip3"
 
 # Runs tree but excludes node_modules, dist  and .git files
 alias treenm='tree -I "node_modules|dist|.git"'
+
+alias n='nvim'

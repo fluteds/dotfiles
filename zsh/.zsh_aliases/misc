@@ -22,7 +22,9 @@ alias mtgEnd="pkill 'Audio Hijack' && pkill Zoom"
 alias ..="cd .."      # Go up one directory
 alias ...="cd ../.."  # Go up two directories
 alias dots="cd ~/dotfiles"  # Go to dotfiles directory
-alias ls="ls -GFh"  # List files with colors and human-readable sizes
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -lah --icons --git --group-directories-first'
+alias lt='eza --tree --icons --level=2'
 function oc()  { cd "$HOME/Documents/Notes" && nvim "$@"; }  # Open notes in nvim
 function obc() { cd "$HOME/Documents/Notes" && nvim "$@"; }  # Open notes in nvim
 
@@ -79,3 +81,6 @@ alias weather="wthrr && wthrr -f t"
 
 # System monitor
 alias task="btop"
+
+# Markdown reader
+alias md="glow"

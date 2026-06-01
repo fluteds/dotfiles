@@ -4,6 +4,7 @@ return {
     version = "*",
     lazy = true,
     ft = "markdown",
+    cmd = { "ObsidianSearch", "ObsidianNew", "ObsidianToday", "ObsidianOpen", "ObsidianTags" },
     dependencies = { "nvim-lua/plenary.nvim", "MeanderingProgrammer/render-markdown.nvim" },
     opts = {
       workspaces = {
@@ -13,8 +14,8 @@ return {
         },
       },
       daily_notes = {
-        folder = "Daily",
-        date_format = "%Y-%m-%d",
+        folder = "02. Daily",
+        date_format = "%d-%m-%y",
         template = nil,
       },
       completion = {
