@@ -41,7 +41,6 @@ function yy() {
 alias files="yy"
 alias irc="weechat"
 alias books="bookokrat"
-alias mail="aerc"
 alias notes="cd ~/Documents/Notes && nvim ."
 
 # WHOIS lookup  

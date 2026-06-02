@@ -248,6 +248,7 @@ backup "$HOME/.config/nvim"
 backup "$HOME/.tmux.conf"
 backup "$HOME/.config/yazi"
 backup "$HOME/.config/ghostty"
+backup "$HOME/.config/doom"
 
 backup "$HOME/.gitconfig"
 backup "$HOME/.gitignore"
@@ -266,7 +267,8 @@ stow -v -t "$HOME" \
   nvim \
   tmux \
   yazi \
-  ghostty
+  ghostty \
+  emacs
 
 echo "✅ Dotfiles symlinked."
 

@@ -7,11 +7,11 @@ set -x
 declare -A gaps
 declare -A color
 
-gaps["top"]="20"
-gaps["bottom"]="20"
-gaps["left"]="20"
-gaps["right"]="20"
-gaps["inner"]="20"
+gaps["top"]="5"
+gaps["bottom"]="10"
+gaps["left"]="10"
+gaps["right"]="10"
+gaps["inner"]="10"
 
 color["preselect"]="0xE02d74da"
 
@@ -24,32 +24,32 @@ sudo yabai --load-sa
 
 # ===== Tiling setting =========================
 
-yabai -m config layout                      bsp
+yabai -m config layout bsp
 
-yabai -m config top_padding                 "${gaps["top"]}"
-yabai -m config bottom_padding              "${gaps["bottom"]}"
-yabai -m config left_padding                "${gaps["left"]}"
-yabai -m config right_padding               "${gaps["right"]}"
-yabai -m config window_gap                  "${gaps["inner"]}"
+yabai -m config top_padding "${gaps["top"]}"
+yabai -m config bottom_padding "${gaps["bottom"]}"
+yabai -m config left_padding "${gaps["left"]}"
+yabai -m config right_padding "${gaps["right"]}"
+yabai -m config window_gap "${gaps["inner"]}"
 
-yabai -m config mouse_follows_focus         off
-yabai -m config focus_follows_mouse         off
+yabai -m config mouse_follows_focus off
+yabai -m config focus_follows_mouse off
 
-yabai -m config window_topmost              off
-yabai -m config window_opacity              off
-yabai -m config window_shadow               float
+yabai -m config window_topmost off
+yabai -m config window_opacity off
+yabai -m config window_shadow float
 
-yabai -m config window_border               off
+yabai -m config window_border off
 
-yabai -m config active_window_opacity       1.0
-yabai -m config normal_window_opacity       1.0
-yabai -m config split_ratio                 0.50
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 1.0
+yabai -m config split_ratio 0.50
 
-yabai -m config auto_balance                off
+yabai -m config auto_balance off
 
-yabai -m config mouse_modifier              fn
-yabai -m config mouse_action1               move
-yabai -m config mouse_action2               resize
+yabai -m config mouse_modifier fn
+yabai -m config mouse_action1 move
+yabai -m config mouse_action2 resize
 
 # ===== Rules ==================================
 
@@ -101,3 +101,4 @@ borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 &
 # Load
 set +x
 printf "yabai: configuration loaded\\n"
+

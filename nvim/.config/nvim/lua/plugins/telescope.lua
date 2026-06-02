@@ -18,6 +18,16 @@ return {
 
       telescope.setup({
         defaults = {
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--follow",
+          },
           mappings = {
             i = {
               ["<C-j>"] = actions.move_selection_next,
@@ -27,6 +37,11 @@ return {
             },
           },
           file_ignore_patterns = { "node_modules", ".git/", "dist/" },
+        },
+        pickers = {
+          find_files = {
+            find_command = { "fd", "--type", "f", "--follow" },
+          },
         },
       })
 

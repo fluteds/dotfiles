@@ -173,7 +173,8 @@ map("n", "<leader>?", function()
 		"  OBSIDIAN",
 		"  <leader>od  Today's daily note",
 		"  <leader>on  New note",
-		"  <leader>os  Search notes",
+		"  <leader>of  Find note by filename",
+		"  <leader>os  Search inside notes",
 		"  <leader>ot  Browse tags",
 		"  <leader>ob  Backlinks for this note",
 		"  <leader>ol  Links in this note",
@@ -210,6 +211,13 @@ end, { desc = "Keybinds cheatsheet" })
 
 -- Obsidian
 map("n", "<leader>on", "<cmd>ObsidianNew<CR>")
+map("n", "<leader>of", function()
+	require("telescope.builtin").find_files({
+		prompt_title = "Obsidian Notes",
+		cwd = vim.fn.expand("~/Documents/Notes"),
+		find_command = { "fd", "--type", "f", "--extension", "md", "--follow" },
+	})
+end, { desc = "Find note by filename" })
 map("n", "<leader>os", "<cmd>ObsidianSearch<CR>")
 map("n", "<leader>ot", "<cmd>ObsidianTags<CR>")
 map("n", "<leader>od", function()

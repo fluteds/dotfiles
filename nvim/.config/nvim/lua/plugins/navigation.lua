@@ -8,11 +8,20 @@ return {
       "MunifTanjim/nui.nvim",
     },
     keys = {
-      { "<leader>E", "<cmd>Neotree toggle<CR>", desc = "Neo-tree toggle" },
+      { "<leader>E", function()
+        local path = vim.fn.expand("%:p:h")
+        local git_root = vim.fn.system("git -C " .. vim.fn.shellescape(path) .. " rev-parse --show-toplevel 2>/dev/null"):gsub("%s+$", "")
+        local dir = (git_root ~= "" and not git_root:match("fatal")) and git_root or vim.fn.getcwd()
+        require("neo-tree.command").execute({ action = "focus", source = "filesystem", dir = dir, toggle = true })
+      end, desc = "Neo-tree toggle" },
     },
     opts = {
       window = { width = 30 },
       filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = {
+          enabled = true,
+        },
         filtered_items = {
           hide_dotfiles = false,
           hide_gitignored = false,
