@@ -185,3 +185,13 @@ fi
 
 precmd() { mommy -1 -s $? }
 alias neofetch="neowofetch"
+
+export PATH=$PATH:/Users/autumn/.spicetify
+
+# pnpm
+export PNPM_HOME="/Users/autumn/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end

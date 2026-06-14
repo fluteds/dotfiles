@@ -13,6 +13,18 @@ return {
     end,
   },
   {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "BufReadPost",
+    opts = {
+      max_lines = 3,
+      trim_scope = "outer",
+    },
+    keys = {
+      { "<leader>uc", "<cmd>TSContextToggle<CR>", desc = "Toggle sticky context" },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()

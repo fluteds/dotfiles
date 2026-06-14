@@ -69,6 +69,17 @@ return {
     opts = {},
   },
   {
+    "RRethy/vim-illuminate",
+    event = "BufReadPost",
+    config = function()
+      require("illuminate").configure({
+        providers = { "lsp", "treesitter", "regex" },
+        delay = 120,
+        filetypes_denylist = { "neo-tree", "snacks_dashboard", "TelescopePrompt", "oil" },
+      })
+    end,
+  },
+  {
     "akinsho/toggleterm.nvim",
     version = "*",
     keys = {

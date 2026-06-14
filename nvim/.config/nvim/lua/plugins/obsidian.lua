@@ -4,7 +4,11 @@ return {
     version = "*",
     lazy = true,
     ft = "markdown",
-    cmd = { "ObsidianSearch", "ObsidianNew", "ObsidianToday", "ObsidianOpen", "ObsidianTags" },
+    cmd = {
+      "ObsidianSearch", "ObsidianNew", "ObsidianToday", "ObsidianOpen", "ObsidianTags",
+      "ObsidianTemplate", "ObsidianFollowLink", "ObsidianBacklinks", "ObsidianLinks",
+      "ObsidianRename", "ObsidianQuickSwitch",
+    },
     dependencies = { "nvim-lua/plenary.nvim", "MeanderingProgrammer/render-markdown.nvim" },
     config = function(_, opts)
       require("obsidian").setup(opts)
@@ -24,6 +28,14 @@ return {
         folder = "02. Daily",
         date_format = "%d-%m-%y",
         template = nil,
+      },
+      templates = {
+        subdir = "Templates",
+        date_format = "%Y-%m-%d",
+        time_format = "%H:%M",
+      },
+      picker = {
+        name = "telescope.nvim",
       },
       completion = {
         nvim_cmp = true,

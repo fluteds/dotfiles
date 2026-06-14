@@ -99,4 +99,13 @@ return {
       { "<leader>ft", "<cmd>TodoTelescope<CR>", desc = "Find TODOs" },
     },
   },
+  {
+    "brenoprata10/nvim-highlight-colors",
+    event = "BufReadPost",
+    opts = {
+      render = "background",
+      enable_named_colors = true,
+      enable_tailwind = false,
+    },
+  },
 }

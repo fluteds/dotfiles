@@ -39,6 +39,16 @@ return {
     },
   },
   {
+    "tris203/precognition.nvim",
+    event = "VeryLazy",
+    opts = {
+      startVisible = false,
+    },
+    keys = {
+      { "<leader>mp", "<cmd>Precognition toggle<CR>", desc = "Toggle motion hints" },
+    },
+  },
+  {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },

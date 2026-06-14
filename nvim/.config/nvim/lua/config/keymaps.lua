@@ -64,7 +64,8 @@ map("n", "]d", vim.diagnostic.goto_next)
 
 -- Claude Code
 map("n", "<leader>oc", function()
-	vim.cmd("vsplit | terminal claude")
+	local dir = vim.fn.expand("%:p:h")
+	vim.cmd("vsplit | terminal cd " .. vim.fn.shellescape(dir) .. " && claude")
 	vim.cmd("startinsert")
 end, { desc = "Open Claude Code in split" })
 
@@ -172,13 +173,22 @@ map("n", "<leader>?", function()
 		"",
 		"  OBSIDIAN",
 		"  <leader>od  Today's daily note",
+		"  <leader>oy  Yesterday's daily note",
+		"  <leader>oT  Tomorrow's daily note",
 		"  <leader>on  New note",
+		"  <leader>oN  Insert note from template",
 		"  <leader>of  Find note by filename",
 		"  <leader>os  Search inside notes",
 		"  <leader>ot  Browse tags",
 		"  <leader>ob  Backlinks for this note",
 		"  <leader>ol  Links in this note",
+		"  <leader>oF  Follow link under cursor",
+		"  <leader>or  Rename note (updates links)",
 		"  <leader>oo  Open note in Obsidian app",
+		"",
+		"  LEARN & TOGGLES",
+		"  <leader>mp  Motion hints  (shows w/b/^/$ targets)",
+		"  <leader>uc  Sticky context bar at top",
 		"",
 		"  SESSION & OTHER",
 		"  <leader>qs  Restore session for this folder",
@@ -220,43 +230,46 @@ map("n", "<leader>of", function()
 end, { desc = "Find note by filename" })
 map("n", "<leader>os", "<cmd>ObsidianSearch<CR>")
 map("n", "<leader>ot", "<cmd>ObsidianTags<CR>")
-map("n", "<leader>od", function()
-	local month_names = {
-		"01-January",
-		"02-February",
-		"03-March",
-		"04-April",
-		"05-May",
-		"06-June",
-		"07-July",
-		"08-August",
-		"09-September",
-		"10-October",
-		"11-November",
-		"12-December",
+local month_names = {
+	"01-January",
+	"02-February",
+	"03-March",
+	"04-April",
+	"05-May",
+	"06-June",
+	"07-July",
+	"08-August",
+	"09-September",
+	"10-October",
+	"11-November",
+	"12-December",
+}
+
+local function daily_note_info(offset_days)
+	local t = os.date("*t", os.time() + offset_days * 86400)
+	return {
+		filename = string.format("%02d-%02d-%02d", t.day, t.month, t.year % 100),
+		folder = string.format("02. Daily/%d/%s", t.year, month_names[t.month]),
+		iso = string.format("%04d-%02d-%02d", t.year, t.month, t.day),
 	}
+end
+
+local function open_daily(offset_days)
 	local vault = vim.fn.expand("~/Documents/Notes")
-
-	local function note_info(offset_days)
-		local t = os.date("*t", os.time() + offset_days * 86400)
-		return {
-			filename = string.format("%02d-%02d-%02d", t.day, t.month, t.year % 100),
-			folder = string.format("02. Daily/%d/%s", t.year, month_names[t.month]),
-		}
-	end
-
-	local today = note_info(0)
-	local yd = note_info(-1)
-	local tm = note_info(1)
-	local fullpath = vault .. "/" .. today.folder .. "/" .. today.filename .. ".md"
+	local target = daily_note_info(offset_days)
+	local yd = daily_note_info(offset_days - 1)
+	local tm = daily_note_info(offset_days + 1)
+	local fullpath = vault .. "/" .. target.folder .. "/" .. target.filename .. ".md"
 	local is_new = vim.fn.filereadable(fullpath) == 0
 
-	vim.fn.mkdir(vault .. "/" .. today.folder, "p")
+	vim.fn.mkdir(vault .. "/" .. target.folder, "p")
 	vim.cmd("e " .. vim.fn.fnameescape(fullpath))
 
 	if is_new then
-		local nav =
-			string.format("[[%s/%s|Yesterday]] | [[%s/%s|Tomorrow]]", yd.folder, yd.filename, tm.folder, tm.filename)
+		local nav = string.format(
+			"[[%s/%s|Yesterday]] | [[%s/%s|Tomorrow]]",
+			yd.folder, yd.filename, tm.folder, tm.filename
+		)
 		local lines = {
 			"---",
 			"created: " .. os.date("%Y-%m-%dT%H:%M:%S"),
@@ -277,13 +290,30 @@ map("n", "<leader>od", function()
 			"",
 			"- ",
 			"",
+			"## To-do",
+			"",
+			"- [ ] ",
+			"",
 			"## Mood",
 			"",
 			"- [ ] Mood: ",
+			"",
+			"---",
+			"",
+			"## Meta",
+			"",
+			"- Created: " .. target.iso,
 		}
 		vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
 	end
-end, { desc = "Daily note" })
+end
+
+map("n", "<leader>od", function() open_daily(0) end,  { desc = "Daily note (today)" })
+map("n", "<leader>oy", function() open_daily(-1) end, { desc = "Daily note (yesterday)" })
+map("n", "<leader>oT", function() open_daily(1) end,  { desc = "Daily note (tomorrow)" })
 map("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>")
 map("n", "<leader>ol", "<cmd>ObsidianLinks<CR>")
 map("n", "<leader>oo", "<cmd>ObsidianOpen<CR>")
+map("n", "<leader>oN", "<cmd>ObsidianTemplate<CR>", { desc = "Insert from template" })
+map("n", "<leader>oF", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow link under cursor" })
+map("n", "<leader>or", "<cmd>ObsidianRename<CR>", { desc = "Rename note + update links" })

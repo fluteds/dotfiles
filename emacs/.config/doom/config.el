@@ -4,18 +4,32 @@
       user-mail-address "alice.penny@outlook.com")
 
 (add-to-list 'custom-theme-load-path (expand-file-name "themes/" doom-user-dir))
-(setq doom-theme 'doom-rose-pine)
+(setq doom-theme 'doom-rose-pine-dawn)
 (setq display-line-numbers-type t)
 (setq org-directory "~/org/")
 
+;; branding ------------------------------------------------------------
+
+(setq frame-title-format "Bobamacs"
+      +doom-dashboard-name "Bobamacs"
+      +workspaces-main "BOBA/HOME")
+
 ;; dashboard -----------------------------------------------------------
 
-(add-to-list '+dashboard-menu-sections
-             '("Open notes"
-               :icon (nerd-icons-octicon "nf-oct-book" :face '+dashboard-menu-title)
-               :key "n"
-               :action obsidian-jump)
-             t)
+(load! "dashboard")
+(load! "habits-tracker")
+(load! "todo-tracker")
+
+;; vertico-posframe ----------------------------------------------------
+
+(after! vertico
+  (setq vertico-posframe-poshandler #'posframe-poshandler-frame-center
+        vertico-posframe-border-width 1
+        vertico-posframe-width 80
+        vertico-posframe-min-height 10
+        vertico-posframe-parameters '((left-fringe . 8)
+                                      (right-fringe . 8)))
+  (vertico-posframe-mode 1))
 
 ;; editor ---------------------------------------------------------------
 
@@ -59,6 +73,26 @@
     (kbd "u")       #'vterm-undo
     (kbd "<return>") #'evil-resume))
 
+(use-package! org-modern
+  :after org
+  :hook (org-mode . org-modern-mode)
+  :hook (org-agenda-finalize . org-modern-agenda)
+  :config
+  (setq org-modern-star 'replace
+        org-modern-table-vertical 1
+        org-modern-list '((?- . "–") (?+ . "•") (?* . "▸"))))
+
+(use-package! valign
+  :hook (org-mode . valign-mode)
+  :hook (markdown-mode . valign-mode))
+
+(use-package! olivetti
+  :defer t
+  :init
+  (setq olivetti-body-width 100
+        olivetti-style 'fancy)
+  (map! :leader :desc "Focused writing" "t z" #'olivetti-mode))
+
 (after! org
   (setq org-todo-keywords '((sequence "TODO" "STUCK" "|" "DONE" "DROPPED"))
         org-src-preserve-indentation t
@@ -86,17 +120,46 @@
   (setq obsidian-directory (expand-file-name "~/Documents/Notes")
         obsidian-inbox-directory "00. Inbox"
         obsidian-daily-notes-directory "02. Daily"
-        obsidian-daily-notes-date-format "%d-%m-%y")
+        obsidian-daily-notes-date-format "%d-%m-%y"
+        obsidian-templates-directory "Templates")
   (global-obsidian-mode t)
+
+  (defun my/obsidian-daily-relative (offset-days)
+    "Open the daily note OFFSET-DAYS away from today, creating it if missing."
+    (let* ((months '("01-January" "02-February" "03-March" "04-April"
+                     "05-May" "06-June" "07-July" "08-August"
+                     "09-September" "10-October" "11-November" "12-December"))
+           (target (time-add (current-time) (days-to-time offset-days)))
+           (year   (format-time-string "%Y" target))
+           (mon    (string-to-number (format-time-string "%m" target)))
+           (month-folder (nth (1- mon) months))
+           (filename (format-time-string "%d-%m-%y" target))
+           (folder (expand-file-name (format "02. Daily/%s/%s" year month-folder)
+                                     obsidian-directory))
+           (path (expand-file-name (concat filename ".md") folder)))
+      (unless (file-directory-p folder) (make-directory folder t))
+      (find-file path)))
+
+  (defun my/obsidian-yesterday () (interactive) (my/obsidian-daily-relative -1))
+  (defun my/obsidian-tomorrow  () (interactive) (my/obsidian-daily-relative  1))
+
   (map! :leader
         (:prefix ("o" . "open")
-         :desc "Jump to note"  "n" #'obsidian-jump
-         :desc "Daily note"    "D" #'obsidian-daily-note
-         :desc "New note"      "N" #'obsidian-capture
-         :desc "Search notes"  "S" #'obsidian-search))
+         :desc "Jump to note"        "n" #'obsidian-jump
+         :desc "Daily note (today)"  "d" #'obsidian-daily-note
+         :desc "Daily (yesterday)"   "y" #'my/obsidian-yesterday
+         :desc "Daily (tomorrow)"    "T" #'my/obsidian-tomorrow
+         :desc "New note"            "N" #'obsidian-capture
+         :desc "Insert template"     "i" #'obsidian-apply-template
+         :desc "Search notes"        "s" #'obsidian-search
+         :desc "Tags"                "t" #'obsidian-find-tag
+         :desc "Backlinks (jump)"    "b" #'obsidian-backlink-jump
+         :desc "Backlinks panel"     "B" #'obsidian-toggle-backlinks-panel
+         :desc "Follow link"         "F" #'obsidian-follow-link-at-point
+         :desc "Move/rename note"    "r" #'obsidian-move-file))
   (map! :map obsidian-mode-map
         :n "gf" #'obsidian-follow-link-at-point
-        :n "gb" #'obsidian-find-backlinks))
+        :n "gb" #'obsidian-backlink-jump))
 
 ;; browser -------------------------------------------------------------
 

@@ -2,6 +2,10 @@
 ;;; $DOOMDIR/packages.el
 
 (package! obsidian)
+(package! vertico-posframe)
+(package! org-modern)
+(package! valign)
+(package! olivetti)
 
 ;; To install a package:
 ;;
