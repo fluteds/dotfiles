@@ -4,7 +4,7 @@
       user-mail-address "alice.penny@outlook.com")
 
 (add-to-list 'custom-theme-load-path (expand-file-name "themes/" doom-user-dir))
-(setq doom-theme 'doom-rose-pine-dawn)
+(setq doom-theme 'doom-rose-pine)
 (setq display-line-numbers-type t)
 (setq org-directory "~/org/")
 
