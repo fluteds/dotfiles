@@ -91,6 +91,7 @@ yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
 yabai -m rule --add app="^Finder$" manage=off
 yabai -m rule --add label="FaceTime" app="^FaceTime$" manage=off
 yabai -m rule --add label="CARROT Weather" app="^CARROT Weather$" manage=off
+yabai -m rule --add label="CleanShot X" app="^CleanShot X$" manage=off
 
 # --- Set SketchyBar Behavior ----------------
 yabai -m config external_bar all:0:0
