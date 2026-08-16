@@ -268,7 +268,8 @@ stow -v -t "$HOME" \
   tmux \
   yazi \
   ghostty \
-  emacs
+  emacs \
+  scripts
 
 echo "✅ Dotfiles symlinked."
 

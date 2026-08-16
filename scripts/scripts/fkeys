@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Toggle the F-row between media keys and plain F1-F12 (for gaming)
+# No arg toggles, "game" and "media" force a mode
+# Drives System Settings > Keyboard > Keyboard Shortcuts > Function Keys, since
+# HIDFKeyMode is not writable by hidutil or defaults, only by that pane
+# Needs Accessibility permission for whatever terminal runs it
+
+fkeymode() { ioreg -r -n AppleHIDKeyboardEventDriverV2 -l -w 0 2>/dev/null | grep -o '"HIDFKeyMode"=[0-9]*' | grep -o '[0-9]*$'; }
+label() { [ "$1" = "1" ] && echo "gaming mode (plain F1-F12)" || echo "media mode"; }
+
+cur=$(fkeymode)
+case "${1:-toggle}" in
+  game|off) want=1 ;;
+  media|on) want=0 ;;
+  toggle) [ "$cur" = "1" ] && want=0 || want=1 ;;
+  *) echo "usage: fkeys [game|media]" >&2; exit 2 ;;
+esac
+
+[ "$cur" = "$want" ] && { echo "f-keys: already $(label "$want")"; exit 0; }
+
+# A previous run's quit can still be in flight and will close the window we just opened
+if pgrep -x "System Settings" >/dev/null; then
+  osascript -e 'tell application "System Settings" to quit' >/dev/null 2>&1
+  for _ in $(seq 100); do pgrep -x "System Settings" >/dev/null || break; sleep 0.1; done
+fi
+
+open "x-apple.systempreferences:com.apple.Keyboard-Settings.extension"
+
+osascript >/dev/null <<EOF
+tell application "System Events"
+  repeat 150 times
+    if exists process "System Settings" then exit repeat
+    delay 0.1
+  end repeat
+end tell
+tell application "System Events" to tell process "System Settings"
+  repeat 150 times
+    if exists window "Keyboard" then exit repeat
+    delay 0.1
+  end repeat
+  if not (exists window "Keyboard") then error "Keyboard pane never appeared"
+  delay 0.6
+  if not (exists sheet 1 of window "Keyboard") then
+    click button 1 of group 2 of scroll area 1 of group 1 of group 3 of splitter group 1 of group 1 of window "Keyboard"
+    repeat 50 times
+      if exists sheet 1 of window "Keyboard" then exit repeat
+      delay 0.1
+    end repeat
+  end if
+  delay 0.4
+  select row 13 of outline 1 of scroll area 1 of group 1 of splitter group 1 of group 1 of sheet 1 of window "Keyboard"
+  delay 0.6
+  set cb to checkbox 1 of group 1 of scroll area 1 of group 2 of splitter group 1 of group 1 of sheet 1 of window "Keyboard"
+  if (value of cb as integer) is not $want then click cb
+  delay 0.4
+  click button 1 of group 2 of splitter group 1 of group 1 of sheet 1 of window "Keyboard"
+end tell
+EOF
+
+sleep 1
+osascript -e 'tell application "System Settings" to quit' >/dev/null 2>&1
+new=$(fkeymode)
+[ "$new" = "$want" ] && echo "f-keys: $(label "$new")" || { echo "f-keys: FAILED, still $(label "$new")" >&2; exit 1; }
