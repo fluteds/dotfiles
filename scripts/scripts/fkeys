@@ -42,7 +42,7 @@ tell application "System Events" to tell process "System Settings"
   if not (exists window "Keyboard") then error "Keyboard pane never appeared"
   delay 0.6
   if not (exists sheet 1 of window "Keyboard") then
-    click button 1 of group 2 of scroll area 1 of group 1 of group 3 of splitter group 1 of group 1 of window "Keyboard"
+    click last button of group 2 of scroll area 1 of group 1 of group 3 of splitter group 1 of group 1 of window "Keyboard"
     repeat 50 times
       if exists sheet 1 of window "Keyboard" then exit repeat
       delay 0.1
