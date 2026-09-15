@@ -17,8 +17,10 @@ All this can be set up *nearly* automatically with one bootstrap script.
 ### Setup notes
 
 - Some parts of the setup require `sudo`. You will be prompted in the terminal when required.
-
-- MTMR is commented out in the Brewfile by default. Uncomment it if you have a Touch Bar Mac and want to try out my touch bar config.
+- MTMR is commented out in the Brewfile by default. **Uncomment** it if you have a Touch Bar Mac and want to try out the touch bar config.
+- These are tools I'm trying out so a stable config for each isn't yet established so if you wanted to use them, use with caution.
+  - Emacs
+  - Aerospace
 
 ## What's included
 
@@ -48,7 +50,7 @@ That means you can edit config files normally and just commit changes like any o
 
 Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim). `<leader>` is **Space**. Press `<leader>?` inside nvim for the full in-editor cheatsheet.
 
-**Plugins**
+####  Plugins
 
 | Category | Plugins |
 |----------|---------|
@@ -60,7 +62,14 @@ Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim). `<leader>` is *
 | Formatting | conform (stylua, prettier, shfmt, ruff), nvim-lint (ruff, shellcheck) |
 | Notes | obsidian.nvim |
 
-**LSP servers:** lua_ls, pyright, ts_ls, rust_analyzer, gopls, bashls
+**LSP servers:**
+
+- lua_ls
+- pyright
+- ts_ls
+- rust_analyzer
+- gopls
+- bashls
 
 <details>
 <summary><strong>Keybinds</strong></summary>

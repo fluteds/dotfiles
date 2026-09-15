@@ -1,0 +1,109 @@
+config-version = 2
+
+start-at-login = true
+
+persistent-workspaces = ['1', '2', '3', '4']
+
+after-startup-command = ['exec-and-forget borders active_color=0xffebbcba inactive_color=0xff403d52 width=3.0 style=square']
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focus-changed = ['move-mouse window-lazy-center']
+
+[gaps]
+inner.horizontal = 0
+inner.vertical = 0
+outer.top = 0
+outer.bottom = 0
+outer.left = 0
+outer.right = 0
+
+[mode.main.binding]
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+shift-alt-h = 'move left'
+shift-alt-j = 'move down'
+shift-alt-k = 'move up'
+shift-alt-l = 'move right'
+
+ctrl-alt-h = 'resize width -50'
+ctrl-alt-j = 'resize height +50'
+ctrl-alt-k = 'resize height -50'
+ctrl-alt-l = 'resize width +50'
+ctrl-alt-e = 'balance-sizes'
+
+shift-ctrl-alt-h = 'join-with left'
+shift-ctrl-alt-j = 'join-with down'
+shift-ctrl-alt-k = 'join-with up'
+shift-ctrl-alt-l = 'join-with right'
+
+alt-f = 'fullscreen'
+shift-alt-space = 'layout floating tiling'
+alt-c = 'layout floating tiling'
+alt-r = 'layout tiles horizontal vertical'
+shift-alt-r = 'layout accordion horizontal vertical'
+
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+
+shift-alt-1 = ['move-node-to-workspace 1', 'workspace 1']
+shift-alt-2 = ['move-node-to-workspace 2', 'workspace 2']
+shift-alt-3 = ['move-node-to-workspace 3', 'workspace 3']
+shift-alt-4 = ['move-node-to-workspace 4', 'workspace 4']
+shift-alt-n = ['move-node-to-workspace next', 'workspace next']
+shift-alt-p = ['move-node-to-workspace prev', 'workspace prev']
+
+alt-b = 'exec-and-forget open -a "Firefox Nightly"'
+alt-o = 'exec-and-forget open -a "Obsidian"'
+alt-t = 'exec-and-forget open -a "CuteGhostty"'
+
+shift-ctrl-alt-r = 'reload-config'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'System Settings'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.AppStore'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'org.keepassxc.keepassxc'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'io.mpv'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'org.videolan.vlc'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ScreenContinuity'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Parsec'
+run = 'layout floating'

@@ -4,16 +4,11 @@ set -x
 
 # ====== Variables =============================
 
-declare -A gaps
-declare -A color
-
-gaps["top"]="0"
-gaps["bottom"]="0"
-gaps["left"]="0"
-gaps["right"]="0"
-gaps["inner"]="0"
-
-color["preselect"]="0xE02d74da"
+gap_top=20
+gap_bottom=20
+gap_left=20
+gap_right=20
+gap_inner=0
 
 # ===== Loading Scripting Additions ============
 
@@ -26,11 +21,11 @@ sudo yabai --load-sa
 
 yabai -m config layout bsp
 
-yabai -m config top_padding "${gaps["top"]}"
-yabai -m config bottom_padding "${gaps["bottom"]}"
-yabai -m config left_padding "${gaps["left"]}"
-yabai -m config right_padding "${gaps["right"]}"
-yabai -m config window_gap "${gaps["inner"]}"
+yabai -m config top_padding "$gap_top"
+yabai -m config bottom_padding "$gap_bottom"
+yabai -m config left_padding "$gap_left"
+yabai -m config right_padding "$gap_right"
+yabai -m config window_gap "$gap_inner"
 
 yabai -m config mouse_follows_focus off
 yabai -m config focus_follows_mouse off
@@ -97,7 +92,7 @@ yabai -m rule --add label="CleanShot X" app="^CleanShot X$" manage=off
 yabai -m config external_bar all:0:0
 
 # Starts Borders Process
-borders active_color=0xffebbcba inactive_color=0xff403d52 width=3.0 style=square &
+borders active_color=0xffebbcba inactive_color=0xff403d52 width=3.0 style=round &
 
 # Load
 set +x
